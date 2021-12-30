@@ -19,7 +19,7 @@
       <st id="GV0" editor="raw" />
       <st id="GV1" editor="raw" />
       <st id="GV2" editor="bool" />
-	</sts>
+	  </sts>
     <cmds>
       <sends />
 	    <accepts>
@@ -30,4 +30,3 @@
     </cmds>
   </nodeDef>
 </nodeDefs>
-

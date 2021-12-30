@@ -10,4 +10,4 @@ ST-str-ST-NAME = Counter Active
 ST-str-GV0-NAME = raw data 0
 ST-str-GV1-NAME = raw data 1
 ST-str-GV2-NAME = Enable Increment
-CMD-str-GV2-NAME = Set Enable Increment
+CMD-SET_INCREMENT-NAME = Set Enable Increment
