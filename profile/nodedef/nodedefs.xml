@@ -18,10 +18,15 @@
       <st id="ST" editor="bool" />
       <st id="GV0" editor="raw" />
       <st id="GV1" editor="raw" />
+      <st id="GV2" editor="bool" />
 	</sts>
     <cmds>
       <sends />
-	  <accepts />
+	    <accepts>
+        <cmd id="SET_INCREMENT">
+          <p id="" editor="bool" init="GV2" />
+        </cmd>
+      </accepts>
     </cmds>
   </nodeDef>
 </nodeDefs>

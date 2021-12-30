@@ -94,6 +94,7 @@ class Controller(udi_interface.Node):
     '''
     def start(self):
         self.poly.setCustomParamsDoc()
+        # Not necessary to call this since profile_version is used from server.json
         self.poly.updateProfile()
 
 

@@ -9,7 +9,7 @@
     "shortPoll": "60",
     "longPoll": "600",
 	"logLevel": "WARNING",
-    "profile_version": "1.0.0",
+    "profile_version": "1.0.1",
 	"customParams": {
 		"nodes": 0,
 		"multiplier": 1
@@ -18,7 +18,7 @@
     	{
     		"title": "Example Node Server for ISY/Polyglot",
     		"author": "Bob Paauwe",
-    		"version": "1.0.0",
+    		"version": "1.0.1",
     		"date": "August 11, 2021",
     		"source": "https://github.com/UniversalDevicesInc/udi-example3-poly",
 			"license": "https://github.com/UniversalDevicesInc/udi-example3-poly/LICENSE"
