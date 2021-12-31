@@ -1,6 +1,6 @@
 {
-    "name": "Example-3",
-    "docs": "https://github.com/UniversalDevicesInc/udi-example3-poly/README.md",
+    "name": "Example-4",
+    "docs": "https://github.com/UniversalDevicesInc/udi-example4-poly/README.md",
     "type": "python3",
     "executable": "count.py",
     "install": "install.sh",
@@ -20,8 +20,8 @@
     		"author": "Bob Paauwe",
     		"version": "1.0.1",
     		"date": "August 11, 2021",
-    		"source": "https://github.com/UniversalDevicesInc/udi-example3-poly",
-			"license": "https://github.com/UniversalDevicesInc/udi-example3-poly/LICENSE"
+    		"source": "https://github.com/UniversalDevicesInc/udi-example4-poly",
+			"license": "https://github.com/UniversalDevicesInc/udi-example4-poly/LICENSE"
 		}
 	],
 	"store" : {

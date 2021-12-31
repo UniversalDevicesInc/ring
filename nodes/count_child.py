@@ -37,6 +37,7 @@ class CounterNode(udi_interface.Node):
         # subscribe to the events we want
         polyglot.subscribe(polyglot.CUSTOMPARAMS, self.parameterHandler)
         polyglot.subscribe(polyglot.POLL, self.poll)
+        polyglot.subscribe(polyglot.START, self.start, address)
 
     '''
     Read the user entered custom parameters. In this case, it is just
@@ -44,6 +45,14 @@ class CounterNode(udi_interface.Node):
     '''
     def parameterHandler(self, params):
         self.Parameters.load(params)
+
+    '''
+    start is called after the node is added to the interface. It is
+    run in a separate thread.  Use this to do anything that needs to
+    be done only onece, at startup.
+    '''
+    def start(self):
+        setDriver('ST', 1, True, True)
 
     '''
     This is where the real work happens.  When we get a shortPoll, increment the

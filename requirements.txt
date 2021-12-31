@@ -1,2 +1,2 @@
-udi_interface>=3.0.10
+udi_interface>=3.0.28
 
