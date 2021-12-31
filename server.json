@@ -1,0 +1,34 @@
+{
+    "name": "Example-3",
+    "docs": "https://github.com/UniversalDevicesInc/udi-example3-poly/README.md",
+    "type": "python3",
+    "executable": "count.py",
+    "install": "install.sh",
+    "description": "Example node server that creates a user specified number of counter child nodes.",
+    "notice": "",
+    "shortPoll": "60",
+    "longPoll": "600",
+	"logLevel": "WARNING",
+    "profile_version": "1.0.0",
+	"customParams": {
+		"nodes": 0,
+		"multiplier": 1
+	},
+    "credits": [
+    	{
+    		"title": "Example Node Server for ISY/Polyglot",
+    		"author": "Bob Paauwe",
+    		"version": "1.0.0",
+    		"date": "August 11, 2021",
+    		"source": "https://github.com/UniversalDevicesInc/udi-example3-poly",
+			"license": "https://github.com/UniversalDevicesInc/udi-example3-poly/LICENSE"
+		}
+	],
+	"store" : {
+		"developer": "bpaauwe@bobsplace.com",
+		"price": 0.00,
+		"recurring": 0,
+		"recurring_interval": "month",
+		"recurring_period": 0
+	}
+}
