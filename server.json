@@ -18,8 +18,8 @@
     	{
     		"title": "Example Node Server for ISY/Polyglot",
     		"author": "Bob Paauwe",
-    		"version": "1.0.1",
-    		"date": "August 11, 2021",
+    		"version": "1.0.2",
+    		"date": "January 14, 2022",
     		"source": "https://github.com/UniversalDevicesInc/udi-example4-poly",
 			"license": "https://github.com/UniversalDevicesInc/udi-example4-poly/LICENSE"
 		}
