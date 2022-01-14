@@ -123,7 +123,7 @@ if __name__ == "__main__":
         polyglot.ready()
 
         # Create the controller node
-        controller = count_ctl.Controller(polyglot, 'controller', 'controller', 'Counter'))
+        controller = count_ctl.Controller(polyglot, 'controller', 'controller', 'Counter')
         polyglot.addNode(controller, conn_status='ST')
 
         # Just sit and wait for events
