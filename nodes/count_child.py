@@ -52,7 +52,7 @@ class CounterNode(udi_interface.Node):
     be done only onece, at startup.
     '''
     def start(self):
-        setDriver('ST', 1, True, True)
+        self.setDriver('ST', 1, True, True)
 
     '''
     This is where the real work happens.  When we get a shortPoll, increment the
