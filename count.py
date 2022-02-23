@@ -112,6 +112,7 @@ if __name__ == "__main__":
         polyglot = udi_interface.Interface([])
         polyglot.start()
 
+        parameters = Custom(polyglot, 'customparams')
         polyglot.setCustomParamsDoc()
         polyglot.updateProfile()
 
