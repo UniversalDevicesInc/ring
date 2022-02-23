@@ -112,8 +112,8 @@ if __name__ == "__main__":
         polyglot = udi_interface.Interface([])
         polyglot.start()
 
-        self.poly.setCustomParamsDoc()
-        self.poly.updateProfile()
+        polyglot.setCustomParamsDoc()
+        polyglot.updateProfile()
 
         # subscribe to the events we want
         polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
