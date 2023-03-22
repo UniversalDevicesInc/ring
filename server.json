@@ -10,6 +10,7 @@
     "longPoll": "600",
 	"logLevel": "WARNING",
     "profile_version": "1.0.1",
+	"oauth": true,
 	"customParams": {
 		"nodes": 0,
 		"multiplier": 1

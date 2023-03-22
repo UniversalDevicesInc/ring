@@ -5,6 +5,10 @@ Copyright (C) 2021 Robert Paauwe
 
 MIT License
 """
+
+# https://github.com/UniversalDevicesInc/udi_python_interface/blob/master/API.md
+
+
 import udi_interface
 import sys
 import time
@@ -67,12 +71,21 @@ def parameterHandler(params):
     else:
         LOGGER.error('Missing number of node parameter')
 
-
     if validChildren:
         createChildren(int(parameters['nodes']))
         polyglot.Notices.clear()
     else:
-        polyglot.Notices['nodes'] = 'Please configure the number of child nodes to create.'
+        polyglot.Notices['nodes'] = 'Please configure the number of child nodes to create zzz5.'
+
+def pollHandler(z):
+    global parameters
+    global polyglot
+
+    LOGGER.info('---> pollHandler')
+
+def oauthHandler():
+    LOGGER.info('---> oauthHandler')
+
 
 
 '''
@@ -117,9 +130,11 @@ if __name__ == "__main__":
         polyglot.updateProfile()
 
         # subscribe to the events we want
+        polyglot.subscribe(polyglot.POLL, pollHandler)
         polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
         polyglot.subscribe(polyglot.STOP, stop)
         polyglot.subscribe(polyglot.ADDNODEDONE, node_queue)
+        polyglot.subscribe(polyglot.OAUTH, oauthHandler)
 
         polyglot.ready()
 
@@ -131,5 +146,5 @@ if __name__ == "__main__":
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
         sys.exit(0)
-        
+
 
