@@ -1,10 +1,8 @@
 
-# Example 3 Node Server (c) 2021 Robert Paauwe
+# Ring Node Server (c) 2023 Universal Devices
 
-A simple node server that demonstrates how to create a node server that
-has a control node and child device nodes.  This node server simply increments
-a couple of counters and updates GV0 and GV1 with the updated
-count at every poll() interval.
+The Ring Node Server retrieves your Ring devices and allows you to 
+get motion and ring events, and also control lighting of floodlights.
 
 ## Installation
 
@@ -13,23 +11,18 @@ count at every poll() interval.
 The settings for this node are:
 
 #### Short Poll
-   * How often to increment the count
+   * TBD
 #### Long Poll
    * Not used
-
-#### nodes
-   * How many child nodes to create
-
-#### multiplier
-   * Apply the multiplier to count and save in GV1
-
 
 ## Requirements
 
 1. Polyglot V3.
-2. ISY firmware 5.3.x or later
+2. ISY firmware 5.5.9 or later
+3. PG3 Remote access must be enabled
+   * Settings are in Portal under Select Tools | Maintenance | PG3 Remote access
 
 # Release Notes
 
-- 1.0.0 08/11/2021
+- 1.0.0 03/23/2023
    - Initial version published to github

@@ -1,15 +1,15 @@
 {
-    "name": "Example-4",
-    "docs": "https://github.com/UniversalDevicesInc/udi-example4-poly/README.md",
+    "name": "Ring",
+    "docs": "https://github.com/UniversalDevicesInc/ring/blob/master/README.md",
     "type": "python3",
-    "executable": "count.py",
+    "executable": "ring.py",
     "install": "install.sh",
-    "description": "Example node server that creates a user specified number of counter child nodes.",
+    "description": "Ring nodeserver.",
     "notice": "",
     "shortPoll": "60",
     "longPoll": "600",
-	"logLevel": "WARNING",
-    "profile_version": "1.0.1",
+	"logLevel": "INFO",
+    "profile_version": "1.0.0",
 	"oauth": true,
 	"customParams": {
 		"nodes": 0,
@@ -17,16 +17,16 @@
 	},
     "credits": [
     	{
-    		"title": "Example Node Server for ISY/Polyglot",
-    		"author": "Bob Paauwe",
-    		"version": "1.0.2",
-    		"date": "January 14, 2022",
-    		"source": "https://github.com/UniversalDevicesInc/udi-example4-poly",
-			"license": "https://github.com/UniversalDevicesInc/udi-example4-poly/LICENSE"
+    		"title": "Ring Node Server for PG3",
+    		"author": "Benoit Mercier",
+    		"version": "0.0.1",
+    		"date": "March 23rd, 2023",
+    		"source": "https://github.com/UniversalDevicesInc/ring",
+			"license": "https://github.com/UniversalDevicesInc/ring/blob/master/LICENSE"
 		}
 	],
 	"store" : {
-		"developer": "bpaauwe@bobsplace.com",
+		"developer": "benoit@universal-devices.com",
 		"price": 0.00,
 		"recurring": 0,
 		"recurring_interval": "month",
