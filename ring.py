@@ -13,7 +13,7 @@ import udi_interface
 import sys
 import time
 import json
-from nodes import count_ctl
+from nodes.controller import Controller
 from nodes import count_child
 
 LOGGER = udi_interface.LOGGER
@@ -46,49 +46,49 @@ def wait_for_node_done():
 '''
 Change all the child node active status drivers to false
 '''
-def stop():
-    global polyglot
-
-    nodes = polyglot.getNodes()
-    for node in nodes:
-        if node != 'controller':   # but not the controller node
-            nodes[node].setDriver('ST', 0, True, True)
-
-    polyglot.stop()
+# def stop():
+#     global polyglot
+#
+#     nodes = polyglot.getNodes()
+#     for node in nodes:
+#         if node == 'controller':   # but not the controller node
+#             nodes[node].setDriver('ST', 0, True, True)
+#
+#     polyglot.stop()
 
 '''
 Read the user entered custom parameters.  Here is where the user will
 configure the number of child nodes that they want created.
 '''
-def parameterHandler(params):
-    global parameters
-    global polyglot
+# def parameterHandler(params):
+#     global parameters
+#     global polyglot
+#
+#     parameters.load(params)
+#     validChildren = False
 
-    parameters.load(params)
-    validChildren = False
+#     if parameters['nodes'] is not None:
+#         if int(parameters['nodes']) > 0:
+#             validChildren = True
+#         else:
+#             LOGGER.error('Invalid number of nodes {}'.format(parameters['nodes']))
+#     else:
+#         LOGGER.error('Missing number of node parameter')
 
-    if parameters['nodes'] is not None:
-        if int(parameters['nodes']) > 0:
-            validChildren = True
-        else:
-            LOGGER.error('Invalid number of nodes {}'.format(parameters['nodes']))
-    else:
-        LOGGER.error('Missing number of node parameter')
+#     if validChildren:
+#         createChildren(int(parameters['nodes']))
+#         polyglot.Notices.clear()
+#     else:
+#         polyglot.Notices['nodes'] = 'Please configure the number of child nodes to create zzz5.'
 
-    if validChildren:
-        createChildren(int(parameters['nodes']))
-        polyglot.Notices.clear()
-    else:
-        polyglot.Notices['nodes'] = 'Please configure the number of child nodes to create zzz5.'
+# def pollHandler(z):
+#     global parameters
+#     global polyglot
+#
+#     LOGGER.info('---> pollHandler')
 
-def pollHandler(z):
-    global parameters
-    global polyglot
-
-    LOGGER.info('---> pollHandler')
-
-def oauthHandler(tokenData):
-    LOGGER.info('---> oauthHandler', json.dumps(tokenData))
+# def oauthHandler(tokenData):
+#     LOGGER.info('---> oauthHandler', json.dumps(tokenData))
 
 
 
@@ -122,7 +122,7 @@ def createChildren(how_many):
         except Exception as e:
             LOGGER.error('Failed to create {}: {}'.format(title, e))
 
-    controller.setDriver('GV0', how_many, True, True)
+    #controller.setDriver('GV0', how_many, True, True)
 
 
 if __name__ == "__main__":
@@ -130,28 +130,28 @@ if __name__ == "__main__":
         polyglot = udi_interface.Interface([])
         polyglot.start()
 
-        parameters = Custom(polyglot, 'customparams')
+#         parameters = Custom(polyglot, 'customparams')
+
+        # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
 
-        # change to checkProfile() ?
-        # compare the profile version in server.json with the installed version and update the ISY if the installed version is behind.
-        polyglot.updateProfile()    # Update with checkProfile() ?
+        # Update the profile files
+        polyglot.updateProfile()    # Use checkProfile() instead?
 
         # subscribe to the events we want
-        polyglot.subscribe(polyglot.POLL, pollHandler)
-        polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
-        polyglot.subscribe(polyglot.STOP, stop)
-        polyglot.subscribe(polyglot.ADDNODEDONE, node_queue)
-        polyglot.subscribe(polyglot.OAUTH, oauthHandler)
-
-        polyglot.ready()
+#         polyglot.subscribe(polyglot.POLL, pollHandler)
+#         polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
+#         polyglot.subscribe(polyglot.STOP, stop)
+#         polyglot.subscribe(polyglot.ADDNODEDONE, node_queue)
+#         polyglot.subscribe(polyglot.OAUTH, oauthHandler)
 
         # Create the controller node
-        controller = count_ctl.Controller(polyglot, 'controller', 'controller', 'Counter')
-        polyglot.addNode(controller, conn_status='ST')
+        controller = Controller(polyglot, 'controller', 'controller', 'Counter')
+#        polyglot.addNode(controller, conn_status='ST')
 
         # Just sit and wait for events
         polyglot.runForever()
+
     except (KeyboardInterrupt, SystemExit):
         sys.exit(0)
 
