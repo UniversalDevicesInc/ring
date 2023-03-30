@@ -3,7 +3,6 @@
   <nodeDef id="ctl" nodeType="139" nls="ctl">
     <sts>
       <st id="ST" editor="bool" />
-      <st id="GV0" editor="raw" />
 	</sts>
     <cmds>
       <sends />

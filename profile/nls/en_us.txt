@@ -1,7 +1,7 @@
 ND-ctl-NAME = Example - Counter Ctl
 ND-ctl-ICON = Output
 ST-ctl-ST-NAME = NodeServer Online
-ST-ctl-GV0-NAME = Number of childeren
+ST-ctl-GV0-NAME = Number of children
 CMD-ctl-DISCOVER-NAME = Re-Discover
 
 ND-child-NAME = Example - Counter Child
