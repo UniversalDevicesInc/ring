@@ -10,16 +10,26 @@ import requests
 from udi_interface import LOGGER
 from lib.oauth import OAuth
 
-
 # Implements the API calls to Ring
 # It inherits the OAuth class
 class RingInterface(OAuth):
     ringApiBasePath = 'https://api.ring.com/integrations/v1'
 
     def __init__(self, polyglot):
-        super(RingInterface, self).__init__(polyglot)
+        super().__init__(polyglot)
         LOGGER.info('Ring interface initialized...')
 
+    # The OAuth class needs to be hooked to these 3 handlers
+    def customDataHandler(self, data):
+        super()._customDataHandler(data)
+
+    def customNsHandler(self, key, data):
+        super()._customNsHandler(key, data)
+
+    def oauthHandler(self, token):
+        super()._oauthHandler(token)
+
+    # Call a Ring API
     def _callApi(self, method='GET', url=None, body=None):
         # Then calling an API, get the access token (it will be refreshed if necessary)
         accessToken = self.getAccessToken()
@@ -54,7 +64,10 @@ class RingInterface(OAuth):
 
             response.raise_for_status()
             LOGGER.info(f"Call PATCH { completeUrl } successful")
-            return response.json()
+            try:
+                return response.json()
+            except requests.exceptions.JSONDecodeError:
+                return response.text
 
         except requests.exceptions.HTTPError as error:
             LOGGER.error(f"Call PATCH { completeUrl } failed: { error }")
@@ -63,11 +76,11 @@ class RingInterface(OAuth):
     def getAllDevices(self):
         return self._callApi(url='/devices')
 
-    def subscribe(self):
+    def subscribe(self, uuid, slot, pragma):
         # Our inbound events will have this pragma in the headers to make sure it's for us
-        pragma = time.time()
+        postbackUrl = f"https://dev.isy.io/api/eisy/pg3/webhook/noresponse/{ uuid }/{ slot }"
 
-        postbackUrl = 'https://dev.isy.io/test'
+        LOGGER.info(f"Requesting subscription to { postbackUrl }")
 
         body = {
             'subscription': {

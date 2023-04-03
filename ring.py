@@ -21,7 +21,8 @@ from udi_interface import LOGGER, Custom, Interface
 polyglot = None
 parameters = None
 controller = None
-oauth = None
+ringInterface = None
+currentPragma = None
 n_queue = []
 
 
@@ -80,11 +81,13 @@ configure the number of child nodes that they want created.
 #     else:
 #         polyglot.Notices['nodes'] = 'Please configure the number of child nodes to create zzz5.'
 
-# def pollHandler(z):
-#     global parameters
-#     global polyglot
-#
-#     LOGGER.info('---> pollHandler')
+def pollHandler(pollType):
+    if pollType == 'longPoll':
+        resubscribe()
+    else:
+        LOGGER.info(f"---> short poll")
+
+
 
 # def oauthHandler(tokenData):
 #     LOGGER.info('---> oauthHandler', json.dumps(tokenData))
@@ -123,25 +126,62 @@ def createChildren(how_many):
 
     #controller.setDriver('GV0', how_many, True, True)
 
+def resubscribe():
+    global currentPragma
+
+    config = polyglot.getConfig()
+
+    # Set a new pragma. Webhooks should have a header 'pragma' = currentPragma
+    currentPragma = str(time.time())
+
+    LOGGER.info(f"Pragma set to { currentPragma }")
+
+    ringInterface.subscribe(config['uuid'], config['profileNum'], currentPragma)
+
+
 def configDoneHandler():
     polyglot.Notices.clear()
 
     accessToken = ringInterface.getAccessToken()
 
     if accessToken is None:
-        LOGGER.info('Access token is not yet available')
+        LOGGER.info('Access token is not yet available. Please authenticate.')
         polyglot.Notices['auth'] = 'Please initiate authentication'
         return
 
-    controller.discoverDevices()
+#     controller.discoverDevices()
+    resubscribe()
 
+def oauthHandler(token):
+    # When user just authorized, the ringInterface needs to store the tokens
+    ringInterface.oauthHandler(token)
+
+    # Then proceed as if we had it from the start, which will trigger device discovery
+    configDoneHandler()
+
+def webhookHandler(data):
+    # Available information: headers, query, body
+    LOGGER.info(f"Webhook received: { data }")
+    pragma = data['headers']['pragma']
+
+    if pragma != currentPragma:
+        LOGGER.info(f"Expected pragma { currentPragma }, receivedPragma { pragma }: Webhook is ignored.")
+        return
+
+#     response = {
+#         'abc': 123,
+#     }
+#     polyglot.webhookResponse(response)
 
 if __name__ == "__main__":
+    global ringInterface
+    global controller
+
     try:
         polyglot = Interface([])
         polyglot.start()
 
-#         parameters = Custom(polyglot, 'customparams')
+        parameters = Custom(polyglot, 'customparams')
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
@@ -156,10 +196,14 @@ if __name__ == "__main__":
         controller = Controller(polyglot, 'controller', 'controller', 'Counter', ringInterface)
 
         # subscribe to the events we want
-#         polyglot.subscribe(polyglot.POLL, pollHandler)
+        polyglot.subscribe(polyglot.POLL, pollHandler)
 #         polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
 #         polyglot.subscribe(polyglot.STOP, stop)
-#         polyglot.subscribe(polyglot.ADDNODEDONE, node_queue)
+
+        polyglot.subscribe(polyglot.CUSTOMDATA, ringInterface.customDataHandler)
+        polyglot.subscribe(polyglot.CUSTOMNS, ringInterface.customNsHandler)
+        polyglot.subscribe(polyglot.OAUTH, oauthHandler)
+        polyglot.subscribe(polyglot.WEBHOOK, webhookHandler)
 
         # We subscribe after our nodes, so we run after if they register to the same events
         polyglot.subscribe(polyglot.CONFIGDONE, configDoneHandler)

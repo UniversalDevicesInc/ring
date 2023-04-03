@@ -32,26 +32,6 @@ class Controller(udi_interface.Node):
 
         self.poly = polyglot
         self.ring = ringInterface
-#         self.customParams = udi_interface.Custom(polyglot, 'customparams')
-
-        # self.customData.token contains the oAuth tokens
-#         self.customData = udi_interface.Custom(polyglot, 'customdata')
-
-        # This is the oauth configuration from the node server store
-#         self.oauthConfig = {}
-
-#         self.ringApiHost = 'https://api.ring.com'
-#         self.ringApiBasePath = '/integrations/v1'
-
-        polyglot.subscribe(polyglot.POLL, self.pollHandler)
-#         polyglot.subscribe(polyglot.CUSTOMPARAMS, self.customParamsHandler)
-#         polyglot.subscribe(polyglot.CUSTOMDATA, self.customDataHandler)
-#         polyglot.subscribe(polyglot.CUSTOMNS, self.customNsHandler)
-
-#        polyglot.subscribe(polyglot.STOP, stop)
-#        polyglot.subscribe(polyglot.ADDNODEDONE, node_queue)
-#         polyglot.subscribe(polyglot.OAUTH, self.oauthHandler)
-#         polyglot.subscribe(polyglot.CONFIGDONE, self.configDoneHandler)
 
         polyglot.addNode(self, conn_status='ST')
 
@@ -105,38 +85,7 @@ class Controller(udi_interface.Node):
 #             if self.oauthConfig.get('client_secret') is None:
 #                 LOGGER.error('oAuth configuration is missing client_secret')
 
-#     def configDoneHandler(self):
-#         self.poly.Notices.clear()
-#
-#         token = self.customData['token']
-#
-#         if token is None:
-#             LOGGER.debug('Token is not set')
-#             self.poly.Notices['auth'] = 'Please initiate authentication'
-#             return
-#
-#         self.oAuthTokensEnsureRefresh()
-#         self.discoverDevices()
 
-    def pollHandler(self, z):
-        LOGGER.info('---> pollHandler')
-
-    '''
-    User proceeded through oAuth authentication.
-    The authorization_code has already been exchanged for access_token and refresh_token by PG3
-    '''
-#     def oauthHandler(self, token):
-#         LOGGER.info('-------------------------- Authenticate ---------------------------------')
-#         LOGGER.info('Authentication to Ring completed')
-#         LOGGER.debug('Received oAuth tokens: {}'.format(json.dumps(token)))
-#         self.saveToken(token)
-
-#     def saveToken(self, token):
-#         # Add the expiry key, so that we can later check if the tokens are due to be expired
-#         token['expiry'] = (datetime.now() + timedelta(seconds=token['expires_in'])).isoformat()
-#
-#         # This updates our copy of customData, but also sends it to PG3 for storage
-#         self.customData['token'] = token
 
     '''
     Refresh oAuth tokens if necessary
