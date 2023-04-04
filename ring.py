@@ -174,9 +174,6 @@ def webhookHandler(data):
 #     polyglot.webhookResponse(response)
 
 if __name__ == "__main__":
-    global ringInterface
-    global controller
-
     try:
         polyglot = Interface([])
         polyglot.start()
