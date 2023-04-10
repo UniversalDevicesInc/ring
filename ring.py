@@ -13,7 +13,6 @@ import sys
 import time
 import json
 from nodes.controller import Controller
-from nodes import count_child
 
 from lib.ringInterface import RingInterface
 from udi_interface import LOGGER, Custom, Interface
@@ -149,8 +148,8 @@ def configDoneHandler():
         polyglot.Notices['auth'] = 'Please initiate authentication'
         return
 
-#     controller.discoverDevices()
-    resubscribe()
+    controller.discoverDevices()
+#     resubscribe()
 
 def oauthHandler(token):
     # When user just authorized, the ringInterface needs to store the tokens
@@ -176,7 +175,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([])
-        polyglot.start()
+        polyglot.start({ 'version': '1.0.0', 'requestId': True })
 
         parameters = Custom(polyglot, 'customparams')
 
@@ -190,7 +189,7 @@ if __name__ == "__main__":
         ringInterface = RingInterface(polyglot)
 
         # Create the controller node
-        controller = Controller(polyglot, 'controller', 'controller', 'Counter', ringInterface)
+        controller = Controller(polyglot, 'controller', 'controller', 'Ring', ringInterface)
 
         # subscribe to the events we want
         polyglot.subscribe(polyglot.POLL, pollHandler)

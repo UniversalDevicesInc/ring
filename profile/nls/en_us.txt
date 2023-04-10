@@ -1,8 +1,41 @@
-ND-ctl-NAME = Example - Counter Ctl
-ND-ctl-ICON = Output
-ST-ctl-ST-NAME = NodeServer Online
-ST-ctl-GV0-NAME = Number of children
-CMD-ctl-DISCOVER-NAME = Re-Discover
+ND-CTL-NAME = Ring Controller
+ND-CTL-ICON = GenericCtl
+ST-CTL-ST-NAME = NodeServer Online
+CMD-CTL-DISCOVER-NAME = Re-Discover devices
+
+ND-DOORBELL-NAME = Doorbell Ding
+ND-DOORBELL-ICON = DoorLock
+ST-DB-ST-NAME = Online
+ST-DB-BAT-NAME = Battery life
+ST-DB-BAT2-NAME = Battery life 2
+ST-DB-BATMV-NAME = Battery mV
+ST-DB-ERR-NAME = Error
+CMD-DB-DON-NAME = Ding simulation
+
+ND-DOORBELLMOTION-NAME = Doorbell Motion
+ND-DOORBELLMOTION-ICON = MotionSensor
+CMD-DBM-DON-NAME = Motion
+CMD-DBM-DOF-NAME = Motion timeout
+
+ND-CAMERA-NAME = Camera Motion
+ND-CAMERA-ICON = MotionSensor
+ST-CAM-ST-NAME = Online
+ST-CAM-BAT-NAME = Battery life
+ST-CAM-BAT2-NAME = Battery life 2
+ST-CAM-BATMV-NAME = Battery mV
+ST-CAM-ERR-NAME = Error
+CMD-CAM-DON-NAME = Motion
+CMD-CAM-DOF-NAME = Motion timeout
+CMD-CAM-QUERY-NAME = Query
+
+ND-FLOOD-NAME = Camera Floodlight
+ND-FLOOD-ICON = Lamp
+CMD-FL-DON-NAME = Turn on
+CMD-FL-DOF-NAME = Turn off
+
+
+
+
 
 ND-child-NAME = Example - Counter Child
 ND-child-ICON = Output

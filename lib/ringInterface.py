@@ -76,6 +76,18 @@ class RingInterface(OAuth):
     def getAllDevices(self):
         return self._callApi(url='/devices')
 
+    def getDeviceData(self, id, prefetched=None):
+        if prefetched is None:
+            devices = self.getAllDevices()
+        else:
+            devices = prefetched
+
+        # If we don't have authorizations, devices will be null
+        if not devices:
+            return
+
+
+
     def subscribe(self, uuid, slot, pragma):
         # Our inbound events will have this pragma in the headers to make sure it's for us
         postbackUrl = f"https://dev.isy.io/api/eisy/pg3/webhook/noresponse/{ uuid }/{ slot }"
