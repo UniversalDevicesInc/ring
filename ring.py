@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Polyglot v3 node server - Ring
 Copyright (C) 2023 Universal Devices
@@ -149,7 +150,7 @@ def configDoneHandler():
         return
 
     controller.discoverDevices()
-#     resubscribe()
+    resubscribe()
 
 def oauthHandler(token):
     # When user just authorized, the ringInterface needs to store the tokens

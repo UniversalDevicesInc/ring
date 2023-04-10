@@ -8,7 +8,11 @@ MIT License
 import sys
 import json
 import requests
+
+
+import udi_interface
 from udi_interface import LOGGER, Node
+
 from nodes.doorbell import Doorbell
 
 class Controller(Node):
@@ -64,13 +68,13 @@ class Controller(Node):
             LOGGER.info(f"Doorbell { doorbellData['id'] }: { doorbellData['description'] }")
             address = str(doorbellData['id'])
             name = doorbellData['description']
-            doorbell = Doorbell(self.poly, self.address, address, name)
+            doorbell = Doorbell(self.poly, self.address, address, name, self.ring)
             self.poly.addNode(doorbell)
 
     def discoverCommand(self, param):
         LOGGER.info(f'Discover not implemented param: {param}')
 
     # The commands here need to match what is in the nodedef profile file.
-    commands = {'DISCOVER': discoverCommand }
+    commands = { 'DISCOVER': discoverCommand }
 
 
