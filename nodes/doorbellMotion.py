@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Polyglot v3 - Doorbell node
+Polyglot v3 - Doorbell motion node
 Copyright (C) 2023 Universal Devices inc
 
 MIT License
@@ -25,11 +25,7 @@ class DoorbellMotion(Node):
 
         # REF: https://github.com/UniversalDevicesInc/hints
         #'0x01030401'
-        self.hint = [1, 3, 4, 1 ]
-
-    # When nodeserver stops, we set all devices offline
-    def setOffline(self):
-        self.setDriver('ST', 0)
+        self.hint = [ 1, 3, 4, 1 ]
 
     # DON = Motion event
     def activate(self):
