@@ -1,16 +1,16 @@
 ND-CTL-NAME = Ring Controller
 ND-CTL-ICON = GenericCtl
 ST-CTL-ST-NAME = NodeServer Online
-CMD-CTL-DISCOVER-NAME = Re-Discover devices
+CMD-CTL-DISCOVER-NAME = Discover devices
+CMD-CTL-QUERYALL-NAME = Query All
 
 ND-DOORBELL-NAME = Doorbell Ding
 ND-DOORBELL-ICON = DoorLock
 ST-DB-ST-NAME = Online
-ST-DB-BAT-NAME = Battery life
-ST-DB-BAT2-NAME = Battery life 2
-ST-DB-BATMV-NAME = Battery mV
-ST-DB-ERR-NAME = Error
-CMD-DB-DON-NAME = Ding simulation
+ST-DB-BATLVL-NAME = Battery life
+ST-DB-GV0-NAME = Battery life 2
+ST-DB-GV1-NAME = Battery mV
+CMD-DB-DON-NAME = Ding
 
 ND-DOORBELLMOTION-NAME = Doorbell Motion
 ND-DOORBELLMOTION-ICON = MotionSensor
@@ -20,27 +20,14 @@ CMD-DBM-DOF-NAME = Motion timeout
 ND-CAMERA-NAME = Camera Motion
 ND-CAMERA-ICON = MotionSensor
 ST-CAM-ST-NAME = Online
-ST-CAM-BAT-NAME = Battery life
-ST-CAM-BAT2-NAME = Battery life 2
-ST-CAM-BATMV-NAME = Battery mV
-ST-CAM-ERR-NAME = Error
+ST-CAM-BATLVL-NAME = Battery life
+ST-CAM-GV0-NAME = Battery life 2
+ST-CAM-GV1-NAME = Battery mV
 CMD-CAM-DON-NAME = Motion
 CMD-CAM-DOF-NAME = Motion timeout
 CMD-CAM-QUERY-NAME = Query
 
-ND-FLOOD-NAME = Camera Floodlight
-ND-FLOOD-ICON = Lamp
-CMD-FL-DON-NAME = Turn on
-CMD-FL-DOF-NAME = Turn off
-
-
-
-
-
-ND-child-NAME = Example - Counter Child
-ND-child-ICON = Output
-ST-str-ST-NAME = Counter Active
-ST-str-GV0-NAME = raw data 0
-ST-str-GV1-NAME = raw data 1
-ST-str-GV2-NAME = Enable Increment
-CMD-SET_INCREMENT-NAME = Set Enable Increment
+ND-LIGHT-NAME = Floodlight
+ND-LIGHT-ICON = Lamp
+CMD-L-DON-NAME = Turn on
+CMD-L-DOF-NAME = Turn off

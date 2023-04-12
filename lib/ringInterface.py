@@ -6,6 +6,7 @@ Copyright (C) 2023 Universal Devices
 MIT License
 """
 import time
+import re
 import requests
 from udi_interface import LOGGER
 from lib.oauth import OAuth
@@ -29,6 +30,10 @@ class RingInterface(OAuth):
     def oauthHandler(self, token):
         super()._oauthHandler(token)
 
+    # Convert nodeserver address to a ring device id (Strip non-numeric characters)
+    def addressToId(self, address):
+        return int(re.sub(r"[^\d]+", '', address))
+
     # Call a Ring API
     def _callApi(self, method='GET', url=None, body=None):
         # Then calling an API, get the access token (it will be refreshed if necessary)
@@ -43,6 +48,8 @@ class RingInterface(OAuth):
             return None
 
         completeUrl = self.ringApiBasePath + url
+
+        #LOGGER.info(f"completeUrl { completeUrl }")
         headers = {
             'Authorization': f"Bearer { accessToken }"
         }
@@ -78,15 +85,17 @@ class RingInterface(OAuth):
 
     def getDeviceData(self, id, prefetched=None):
         if prefetched is None:
+            LOGGER.info('prefetched is none')
             devices = self.getAllDevices()
         else:
             devices = prefetched
 
         # If we don't have authorizations, devices will be null
-        if not devices:
+        if devices is None:
             return
 
-
+        allDevices = devices['doorbells'] + devices['stickup_cams']
+        return next((d for d in allDevices if d['id'] == id), None)
 
     def subscribe(self, uuid, slot, pragma):
         # Our inbound events will have this pragma in the headers to make sure it's for us

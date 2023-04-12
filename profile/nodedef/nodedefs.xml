@@ -2,12 +2,13 @@
 
   <nodeDef id="CTL" nodeType="139" nls="CTL">
     <sts>
-      <st id="ST" editor="boolean" />
+      <st id="ST" editor="boolean" /> <!-- Online -->
 	</sts>
     <cmds>
       <sends />
       <accepts>
         <cmd id="DISCOVER" />
+        <cmd id="QUERYALL"/>
       </accepts>
     </cmds>
   </nodeDef>
@@ -16,17 +17,15 @@
   <nodedef id="DOORBELL" nls="DB">
     <sts>
       <st id="ST" editor="boolean"/> <!-- Online -->
-      <st id="BAT" editor="percent"/> <!-- Battery level -->
-      <st id="BAT2" editor="percent"/> <!-- Battery level 2 -->
-      <st id="BATMV" editor="mv"/> <!-- Battery level mV -->
-      <st id="ERR" editor="boolean" hide="T" />
+      <st id="BATLVL" editor="percent"/> <!-- Battery level -->
+      <st id="GV0" editor="percent"/> <!-- Battery level 2 -->
+      <st id="GV1" editor="mv"/> <!-- Battery level mV -->
     </sts>
     <cmds>
       <sends>
         <cmd id="DON"/>
       </sends>
       <accepts>
-        <cmd id="DON"/>
         <cmd id="QUERY"/>
       </accepts>
     </cmds>
@@ -41,7 +40,6 @@
         <cmd id="DOF"/>
       </sends>
       <accepts>
-        <cmd id="DON"/>
       </accepts>
     </cmds>
   </nodedef>
@@ -50,10 +48,9 @@
   <nodedef id="CAMERA" nls="CAM">
     <sts>
       <st id="ST" editor="boolean"/> <!-- Online -->
-      <st id="BAT" editor="percent"/> <!-- Battery level -->
-      <st id="BAT2" editor="percent"/> <!-- Battery level 2 -->
-      <st id="BATMV" editor="mv"/> <!-- Battery level mV -->
-      <st id="ERR" editor="boolean" hide="T" />
+      <st id="BATLVL" editor="percent"/> <!-- Battery level -->
+      <st id="GV0" editor="percent"/> <!-- Battery level 2 -->
+      <st id="GV1" editor="mv"/> <!-- Battery level mV -->
     </sts>
     <cmds>
       <sends>
@@ -61,14 +58,13 @@
         <cmd id="DOF"/>
       </sends>
       <accepts>
-        <cmd id="DON"/>
         <cmd id="QUERY"/>
       </accepts>
     </cmds>
   </nodedef>
 
   <!-- Floodlight - This is an additional node for cameras which has lights -->
-  <nodedef id="FLOOD" nls="FL">
+  <nodedef id="LIGHT" nls="L">
     <sts>
       <!-- <st id="ST" editor="_78_0"/> Floodlight state not available in the API -->
     </sts>
@@ -84,20 +80,4 @@
     </cmds>
   </nodedef>
 
-<!--  <nodeDef id="child" nodeType="139" nls="str">-->
-<!--    <sts>-->
-<!--      <st id="ST" editor="bool" />-->
-<!--      <st id="GV0" editor="raw" />-->
-<!--      <st id="GV1" editor="raw" />-->
-<!--      <st id="GV2" editor="bool" />-->
-<!--	  </sts>-->
-<!--    <cmds>-->
-<!--      <sends />-->
-<!--	    <accepts>-->
-<!--        <cmd id="SET_INCREMENT">-->
-<!--          <p id="" editor="bool" init="GV2" />-->
-<!--        </cmd>-->
-<!--      </accepts>-->
-<!--    </cmds>-->
-<!--  </nodeDef>-->
 </nodeDefs>

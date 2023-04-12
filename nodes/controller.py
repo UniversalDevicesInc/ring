@@ -5,14 +5,8 @@ Copyright (C) 2023 Universal Devices
 
 MIT License
 """
-import sys
-import json
 import requests
-
-
-import udi_interface
 from udi_interface import LOGGER, Node
-
 from nodes.doorbell import Doorbell
 
 class Controller(Node):
@@ -20,7 +14,7 @@ class Controller(Node):
     id = 'CTL'
 
     drivers = [
-        { 'driver': 'ST', 'value': 1, 'uom': 2 }
+        { 'driver': 'ST', 'value': 0, 'uom': 2 }
     ]
 
     def __init__(self, polyglot, parent, address, name, ringInterface):
@@ -33,48 +27,49 @@ class Controller(Node):
 
         LOGGER.info('Controller Initialized...')
 
-    '''
-    Read the user entered custom parameters.  Here is where the user will
-    configure the number of child nodes that they want created.
-    '''
-#     def customParamsHandler(self, params):
-#         global parameters
-#         global polyglot
+    def discoverDevices(self, param=None):
+        userInfo = self.ring.getUserInfo()
+        self.userId = userInfo['user']['id']
 
-#         self.customParams.load(params)
-    #     validChildren = False
+        LOGGER.info(f"User id is: { self.userId }")
 
-    #     if parameters['nodes'] is not None:
-    #         if int(parameters['nodes']) > 0:
-    #             validChildren = True
-    #         else:
-    #             LOGGER.error('Invalid number of nodes {}'.format(parameters['nodes']))
-    #     else:
-    #         LOGGER.error('Missing number of node parameter')
+        self.devices = self.ring.getAllDevices()
+        LOGGER.info(f'Devices: { self.devices }')
 
-    #     if validChildren:
-    #         createChildren(int(parameters['nodes']))
-    #         polyglot.Notices.clear()
-    #     else:
-    #         polyglot.Notices['nodes'] = 'Please configure the number of child nodes to create zzz5.'
+        for doorbellData in self.devices['doorbells']:
+            ownerId = doorbellData['owner']['id']
 
+            if ownerId == self.userId:
+                LOGGER.warn(f"Adding doorbell { doorbellData['id'] }: { doorbellData['description'] }")
+                addressDoorbell = str(doorbellData['id'])
+                name = doorbellData['description']
+                doorbell = Doorbell(self.poly, self.address, addressDoorbell, name, self.ring)
+                self.poly.addNode(doorbell)
+            else:
+                LOGGER.warn(f"Adding doorbell { doorbellData['id'] } ({ doorbellData['description'] }) ignored: Doorbell is shared")
 
-    def discoverDevices(self):
-        devices = self.ring.getAllDevices()
-        LOGGER.info(f'Devices: { type(devices) } {devices}')
-        LOGGER.info(f"controller address { self.address }")
+    # When node is added, automatically "query" using prefetched devices data from discoverDevices
+    def addNodeDoneHandler(self, nodeData):
+        address = nodeData['address']
 
-        for doorbellData in devices['doorbells']:
-            LOGGER.info(f"Doorbell { doorbellData['id'] }: { doorbellData['description'] }")
-            address = str(doorbellData['id'])
-            name = doorbellData['description']
-            doorbell = Doorbell(self.poly, self.address, address, name, self.ring)
-            self.poly.addNode(doorbell)
+        for node in self.poly.nodes():
+            if node.address == address and hasattr(node, 'queryWithPrefetched'):
+                node.queryWithPrefetched(self.devices)
 
-    def discoverCommand(self, param):
-        LOGGER.info(f'Discover not implemented param: {param}')
+    def queryAll(self, param=None):
+        # Prefetch devices data
+        self.devices = self.ring.getAllDevices()
+        LOGGER.info(f'Devices: { self.devices }')
+
+        for node in self.poly.nodes():
+            if hasattr(node, 'queryWithPrefetched'):
+                # Run a query on all devices with prefetched data
+                node.queryWithPrefetched(self.devices)
 
     # The commands here need to match what is in the nodedef profile file.
-    commands = { 'DISCOVER': discoverCommand }
+    commands = {
+        'DISCOVER': discoverDevices,
+        'QUERYALL': queryAll
+        }
 
 

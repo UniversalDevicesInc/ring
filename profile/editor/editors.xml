@@ -3,9 +3,6 @@
 	<editor id="boolean">
 		<range uom="2" subset="0,1" />
 	</editor>
-<!--	<editor id="raw">-->
-<!--		<range uom="56" min="-10000" max="10000" prec="0" /> -->
-<!--	</editor>-->
 	<editor id="percent">
 		<!-- 51 is percent -->
 		<range uom="51" subset="0-100" />

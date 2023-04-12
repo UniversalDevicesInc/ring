@@ -2,7 +2,7 @@
 # Ring Node Server (c) 2023 Universal Devices
 
 The Ring Node Server retrieves your Ring devices and allows you to 
-get motion and ring events, and also control lighting of floodlights.
+get motion and ring events, and also control floodlights.
 
 ## Installation
 
@@ -11,18 +11,18 @@ get motion and ring events, and also control lighting of floodlights.
 The settings for this node are:
 
 #### Short Poll
-   * TBD
+   * The interval used to poll the battery level
 #### Long Poll
-   * Not used
+   * The interval used to resubscribe to Ring events
 
 ## Requirements
 
-1. Polyglot V3.
+1. PG3x (eisy, or Polisy updated with PG3x)
 2. ISY firmware 5.5.9 or later
-3. PG3 Remote access must be enabled
-   * Settings are in Portal under Select Tools | Maintenance | PG3 Remote access
+3. PG3 Remote connection must be enabled
+   * Settings are in Portal under Select Tools | Maintenance | PG3 Remote connection
 
 # Release Notes
 
-- 1.0.0 03/23/2023
+- 1.0.0 04/12/2023
    - Initial version published to github
