@@ -10,7 +10,6 @@ import requests
 from datetime import timedelta, datetime
 from udi_interface import LOGGER, Custom
 
-
 '''
 OAuth is the class to manage oauth tokens to an external service
 '''
@@ -21,12 +20,6 @@ class OAuth:
 
         # This is the oauth configuration from the node server store
         self.oauthConfig = {}
-
-        polyglot.subscribe(polyglot.CUSTOMDATA, self._customDataHandler)
-        polyglot.subscribe(polyglot.CUSTOMNS, self._customNsHandler)
-        polyglot.subscribe(polyglot.OAUTH, self._oauthHandler)
-
-        LOGGER.info('OAuth Initialized')
 
     # customData contains current oAuth tokens: self.customData['tokens']
     def _customDataHandler(self, data):
