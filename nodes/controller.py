@@ -129,7 +129,7 @@ class Controller(Node):
     def queryAll(self, param=None):
         # Prefetch devices data
         self.devices = self.ring.getAllDevices()
-        LOGGER.info(f'Devices: { self.devices }')
+        LOGGER.debug(f'Devices: { self.devices }')
 
         for node in self.poly.nodes():
             if hasattr(node, 'queryWithPrefetched'):

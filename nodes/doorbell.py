@@ -56,7 +56,7 @@ class Doorbell(Node):
             self.setDriver('ST', 0)
             return
 
-        LOGGER.info(f"Device data: { deviceData }")
+        LOGGER.debug(f"Device data: { deviceData }")
 
         try:
             # Device is online?
