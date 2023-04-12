@@ -17,10 +17,12 @@ from lib.ringInterface import RingInterface
 from nodes.controller import Controller
 
 validEvents = [ 'new-ding', 'new-motion' ]
+# Event 'new-on_demand' is sent when someone uses Live view
+
 
 polyglot = None
-controller = None
 ringInterface = None
+controller = None
 currentPragma = None
 
 def configDoneHandler():
@@ -48,7 +50,8 @@ def resubscribe():
 
     config = polyglot.getConfig()
 
-    # Set a new pragma. Webhooks should have a header 'pragma' = currentPragma
+    # Set a new pragma. Webhooks will be accepted only if it has a header 'pragma' = currentPragma
+    # We change it every long polls as a security measure
     currentPragma = str(time.time())
 
     LOGGER.info(f"Pragma set to { currentPragma }")
@@ -74,19 +77,17 @@ def stopHandler():
 
 def webhookHandler(data):
     # Available information: headers, query, body
-    LOGGER.info(f"Webhook received: { data }")
+    LOGGER.debug(f"Webhook received: { data }")
     pragma = data['headers']['pragma']
 
+    # Ignore webhooks if they don't have the right pragma
     if pragma != currentPragma:
         LOGGER.info(f"Expected pragma { currentPragma }, receivedPragma { pragma }: Webhook is ignored.")
-        LOGGER.info('TEST CODE!!!! pragma ignored')
-        #return
+        return
 
-    LOGGER.info(f"Body: { data['body'] }")
+    LOGGER.info(f"Webhook body received: { data['body'] }")
     eventInfo = json.loads(data['body'])
-    processEvent(eventInfo)
 
-def processEvent(eventInfo):
     event = eventInfo['event'] # 'new-ding' or 'new-motion'
     id = eventInfo['data']['doorbell']['id']
     deviceName = eventInfo['data']['doorbell']['description']
@@ -147,5 +148,3 @@ if __name__ == "__main__":
 
     except (KeyboardInterrupt, SystemExit):
         sys.exit(0)
-
-

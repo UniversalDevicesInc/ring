@@ -123,7 +123,7 @@ class RingInterface(OAuth):
         return self._callApi(url='/user/info')
 
     def floodlightOn(self, deviceId):
-        return self._callApi(method='PUT', url=f"/{ deviceId }/floodlight_on")
+        return self._callApi(method='PUT', url=f"/devices/{ deviceId }/floodlight_on")
 
     def floodlightOff(self, deviceId):
-        return self._callApi(method='PUT', url=f"/{ deviceId }/floodlight_off")
+        return self._callApi(method='PUT', url=f"/devices/{ deviceId }/floodlight_off")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Polyglot v3 - Doorbell motion node
+Polyglot v3 - Doorbell node
 Copyright (C) 2023 Universal Devices inc
 
 MIT License
@@ -31,7 +31,7 @@ class Doorbell(Node):
 
         # REF: https://github.com/UniversalDevicesInc/hints
         #'0x01080101'
-        self.hint = [1, 8, 1, 1 ]
+        self.hint = [ 1, 8, 1, 1 ]
 
     # When nodeserver stops, we set all devices offline
     def setOffline(self):
@@ -49,7 +49,7 @@ class Doorbell(Node):
     def query(self, prefetched=None):
         deviceData = self.ring.getDeviceData(self.deviceId, prefetched)
 
-        LOGGER.info(f"Query for node { self.address }")
+        LOGGER.info(f"Query for node { self.address } ({ self.name })")
 
         if deviceData is None:
             LOGGER.info(f"Ring device id { self.deviceId } not found")
@@ -88,7 +88,7 @@ class Doorbell(Node):
             pass
 
         # Always report, even if it has not changed
-        self.reportDrivers()
+        # self.reportDrivers()
 
     # The commands here need to match what is in the nodedef profile file.
     commands = {
