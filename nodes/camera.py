@@ -36,6 +36,14 @@ class Camera(Node):
     def activate(self):
         self.reportCmd('DON')
 
+    # When nodeserver stops, we set all devices offline
+    def setOffline(self):
+        self.setDriver('ST', 0)
+
+    # Only nodes with this method can be globally refreshed
+    def queryWithPrefetched(self, prefetched):
+        self.query(prefetched)
+
     # Query for a single node with the possibility of passing prefetched devices data
     def query(self, prefetched=None):
         deviceData = self.ring.getDeviceData(self.deviceId, prefetched)
