@@ -68,7 +68,7 @@ class OAuth:
         self.customData['token'] = token
 
     def _oAuthTokensRefresh(self):
-        LOGGER.info('-------------------------- Refreshing oAuth tokens ---------------------------------')
+        LOGGER.info('Refreshing oAuth tokens')
         LOGGER.debug(f"Token before: { self.customData.token }")
         data = {
             'grant_type': 'refresh_token',
