@@ -8,6 +8,7 @@ MIT License
 import requests
 from udi_interface import LOGGER, Node
 from nodes.doorbell import Doorbell
+from nodes.doorbellMotion import DoorbellMotion
 
 class Controller(Node):
     # nodedef id
@@ -40,11 +41,17 @@ class Controller(Node):
             ownerId = doorbellData['owner']['id']
 
             if ownerId == self.userId:
-                LOGGER.warn(f"Adding doorbell { doorbellData['id'] }: { doorbellData['description'] }")
-                addressDoorbell = str(doorbellData['id'])
-                name = doorbellData['description']
-                doorbell = Doorbell(self.poly, self.address, addressDoorbell, name, self.ring)
+                addressDoorbell = str(doorbellData['id']) + '_db'
+                nameDoorbell = doorbellData['description']
+                doorbell = Doorbell(self.poly, self.address, addressDoorbell, nameDoorbell, self.ring)
+                LOGGER.warn(f"Adding doorbell { addressDoorbell }: { nameDoorbell }")
                 self.poly.addNode(doorbell)
+
+                addressDoorbellMotion = str(doorbellData['id']) + '_m'
+                nameDoorbellMotion = doorbellData['description'] + ' (Motion)'
+                doorbellMotion = DoorbellMotion(self.poly, self.address, addressDoorbellMotion, nameDoorbellMotion, self.ring)
+                LOGGER.warn(f"Adding doorbell motion node { addressDoorbellMotion }: { nameDoorbellMotion }")
+                self.poly.addNode(doorbellMotion)
             else:
                 LOGGER.warn(f"Adding doorbell { doorbellData['id'] } ({ doorbellData['description'] }) ignored: Doorbell is shared")
 

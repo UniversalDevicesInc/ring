@@ -4,7 +4,7 @@ ST-CTL-ST-NAME = NodeServer Online
 CMD-CTL-DISCOVER-NAME = Discover devices
 CMD-CTL-QUERYALL-NAME = Query All
 
-ND-DOORBELL-NAME = Doorbell Ding
+ND-DOORBELL-NAME = Doorbell
 ND-DOORBELL-ICON = DoorLock
 ST-DB-ST-NAME = Online
 ST-DB-BATLVL-NAME = Battery life

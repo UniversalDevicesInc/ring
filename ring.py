@@ -95,10 +95,10 @@ def processEvent(eventInfo):
         LOGGER.info(f"Invalid event received: { event }")
         return
 
-    if event == 'new-motion':
-        address = str(id) + 'm'
-    else:
-        address = str(id)
+    if event == 'new-ding':
+        address = str(id) + '_db'
+    elif event == 'new-motion':
+        address = str(id) + '_m'
 
     LOGGER.info(f"Event { event } for address { address } ({ deviceName })")
 

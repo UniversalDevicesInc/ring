@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Polyglot v3 - Doorbell node
+Polyglot v3 - Doorbell motion node
 Copyright (C) 2023 Universal Devices inc
 
 MIT License
@@ -16,11 +16,11 @@ class Doorbell(Node):
     # nodedef id
     id = 'DOORBELL'
     drivers = [
-            { 'driver': 'ST', 'value': 0, 'uom': 2 },
-            { 'driver': 'BATLVL', 'value': 0, 'uom': 51 },
-            { 'driver': 'GV0', 'value': 0, 'uom': 51 },
-            { 'driver': 'GV1', 'value': 0, 'uom': 43 }
-            ]
+        { 'driver': 'ST', 'value': 0, 'uom': 2 },
+        { 'driver': 'BATLVL', 'value': 0, 'uom': 51 },
+        { 'driver': 'GV0', 'value': 0, 'uom': 51 },
+        { 'driver': 'GV1', 'value': 0, 'uom': 43 }
+        ]
 
     def __init__(self, polyglot, parent, address, name, ringInterface):
         super().__init__(polyglot, parent, address, name)
