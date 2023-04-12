@@ -57,8 +57,6 @@
       </sends>
       <accepts>
         <cmd id="QUERY"/>
-        <cmd id="DON"/>
-        <cmd id="DOF"/>
       </accepts>
     </cmds>
   </nodedef>
