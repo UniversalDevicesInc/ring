@@ -180,7 +180,7 @@ class Controller(Node):
     # This is called when we test webhooks - We successfully received it.
     def activate(self):
         if self.getDriver('GV0') == 1: # Test in progress
-            LOGGER.error('Webhook test message received successfully.')
+            LOGGER.info('Webhook test message received successfully.')
             self.webhookTimer.cancel()
             self.setDriver('GV0', 2) # 2=Success
 

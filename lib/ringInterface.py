@@ -37,7 +37,16 @@ class RingInterface(OAuth):
         return int(re.sub(r"[^\d]+", '', address))
 
     def getPostbackUrl(self, uuid, slot):
-        return f"https://dev.isy.io/api/eisy/pg3/webhook/noresponse/{ uuid }/{ slot }"
+        config = self.poly.getConfig()
+
+        if config['store'].lower() == 'local':
+            host = 'dev.isy.io'
+        else:
+            host = 'my.isy.io'
+
+        LOGGER.info(f"Store is {config['store']}: Using hostname { host } for webhook url")
+
+        return f"https://{ host }/api/eisy/pg3/webhook/noresponse/{ uuid }/{ slot }"
 
     # Call a Ring API
     def _callApi(self, method='GET', url=None, body=None):
@@ -109,6 +118,7 @@ class RingInterface(OAuth):
     def testWebhook(self, body):
         try:
             config = self.poly.getConfig()
+
             completeUrl = self.getPostbackUrl(config['uuid'], config['profileNum'])
 
             headers = {
