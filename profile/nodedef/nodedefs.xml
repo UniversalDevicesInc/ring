@@ -2,13 +2,15 @@
 
   <nodeDef id="CTL" nodeType="139" nls="CTL">
     <sts>
-      <st id="ST" editor="boolean" /> <!-- Online -->
+      <st id="ST" editor="online" /> <!-- Online -->
+      <st id="GV0" editor="test" /> <!-- Test result -->
 	</sts>
     <cmds>
       <sends />
       <accepts>
         <cmd id="DISCOVER" />
         <cmd id="QUERYALL"/>
+        <cmd id="TEST"/>  <!-- Test Ring connectivity -->
       </accepts>
     </cmds>
   </nodeDef>
@@ -16,7 +18,7 @@
   <!-- Doorbell Main node -->
   <nodedef id="DOORBELL" nls="DB">
     <sts>
-      <st id="ST" editor="boolean"/> <!-- Online -->
+      <st id="ST" editor="online"/> <!-- Online -->
       <st id="BATLVL" editor="percent"/> <!-- Battery level -->
       <st id="GV0" editor="percent"/> <!-- Battery level 2 -->
       <st id="GV1" editor="mv"/> <!-- Battery level mV -->
@@ -46,7 +48,7 @@
   <!-- Camera Motion Node -->
   <nodedef id="CAMERA" nls="CAM">
     <sts>
-      <st id="ST" editor="boolean"/> <!-- Online -->
+      <st id="ST" editor="online"/> <!-- Online -->
       <st id="BATLVL" editor="percent"/> <!-- Battery level -->
       <st id="GV0" editor="percent"/> <!-- Battery level 2 -->
       <st id="GV1" editor="mv"/> <!-- Battery level mV -->

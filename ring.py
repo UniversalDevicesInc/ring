@@ -10,20 +10,18 @@ MIT License
 # https://github.com/UniversalDevicesInc/udi_python_interface/blob/master/API.md
 
 import sys
-import time
 import json
 from udi_interface import LOGGER, Custom, Interface
 from lib.ringInterface import RingInterface
 from nodes.controller import Controller
 
-validEvents = [ 'new-ding', 'new-motion' ]
+validEvents = [ 'new-ding', 'new-motion', 'webhook-test' ]
 # Event 'new-on_demand' is sent when someone uses Live view
 
 
 polyglot = None
 ringInterface = None
 controller = None
-currentPragma = None
 
 def configDoneHandler():
     polyglot.Notices.clear()
@@ -36,7 +34,7 @@ def configDoneHandler():
         return
 
     controller.discoverDevices()
-    resubscribe()
+    ringInterface.subscribe()
 
 def oauthHandler(token):
     # When user just authorized, the ringInterface needs to store the tokens
@@ -45,22 +43,9 @@ def oauthHandler(token):
     # Then proceed with device discovery
     configDoneHandler()
 
-def resubscribe():
-    global currentPragma
-
-    config = polyglot.getConfig()
-
-    # Set a new pragma. Webhooks will be accepted only if it has a header 'pragma' = currentPragma
-    # We change it every long polls as a security measure
-    currentPragma = str(time.time())
-
-    LOGGER.info(f"Pragma set to { currentPragma }")
-
-    ringInterface.subscribe(config['uuid'], config['profileNum'], currentPragma)
-
 def pollHandler(pollType):
     if pollType == 'longPoll':
-        resubscribe()
+        ringInterface.subscribe()
     else:
         controller.queryAll()
 
@@ -78,11 +63,12 @@ def stopHandler():
 def webhookHandler(data):
     # Available information: headers, query, body
     LOGGER.debug(f"Webhook received: { data }")
-    pragma = data['headers']['pragma']
+    receivedPragma = data['headers']['pragma']
+    currentPragma = ringInterface.getCurrentPragma()
 
     # Ignore webhooks if they don't have the right pragma
-    if pragma != currentPragma:
-        LOGGER.info(f"Expected pragma { currentPragma }, receivedPragma { pragma }: Webhook is ignored.")
+    if receivedPragma != currentPragma:
+        LOGGER.info(f"Expected pragma { currentPragma }, receivedPragma { receivedPragma }: Webhook is ignored.")
         return
 
     LOGGER.info(f"Webhook body received: { data['body'] }")
@@ -100,6 +86,8 @@ def webhookHandler(data):
         address = str(id) + '_db'
     elif event == 'new-motion':
         address = str(id) + '_m'
+    elif event == 'webhook-test':
+        address = id
 
     LOGGER.info(f"Event { event } for address { address } ({ deviceName })")
 
@@ -109,7 +97,6 @@ def webhookHandler(data):
         node.activate()
     else:
         LOGGER.info(f"Node { address } not found")
-
 
 if __name__ == "__main__":
     try:

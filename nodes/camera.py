@@ -15,11 +15,11 @@ class Camera(Node):
     # nodedef id
     id = 'CAMERA'
     drivers = [
-        { 'driver': 'ST', 'value': 0, 'uom': 2 },
+        { 'driver': 'ST', 'value': 0, 'uom': 25 },
         { 'driver': 'BATLVL', 'value': 0, 'uom': 51 },
         { 'driver': 'GV0', 'value': 0, 'uom': 51 },
         { 'driver': 'GV1', 'value': 0, 'uom': 43 }
-        ]
+    ]
 
     def __init__(self, polyglot, parent, address, name, ringInterface):
         super().__init__(polyglot, parent, address, name)
@@ -90,4 +90,4 @@ class Camera(Node):
         # self.reportDrivers()
 
     # The commands here need to match what is in the nodedef profile file.
-        commands = {}
+    commands = {}

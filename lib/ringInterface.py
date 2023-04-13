@@ -18,6 +18,8 @@ class RingInterface(OAuth):
 
     def __init__(self, polyglot):
         super().__init__(polyglot)
+
+        self.poly = polyglot
         LOGGER.info('Ring interface initialized...')
 
     # The OAuth class needs to be hooked to these 3 handlers
@@ -33,6 +35,9 @@ class RingInterface(OAuth):
     # Convert nodeserver address to a ring device id (Strip non-numeric characters)
     def addressToId(self, address):
         return int(re.sub(r"[^\d]+", '', address))
+
+    def getPostbackUrl(self, uuid, slot):
+        return f"https://dev.isy.io/api/eisy/pg3/webhook/noresponse/{ uuid }/{ slot }"
 
     # Call a Ring API
     def _callApi(self, method='GET', url=None, body=None):
@@ -77,8 +82,45 @@ class RingInterface(OAuth):
                 return response.text
 
         except requests.exceptions.HTTPError as error:
-            LOGGER.error(f"Call PATCH { completeUrl } failed: { error }")
+            LOGGER.error(f"Call { method } { completeUrl } failed: { error }")
             return None
+
+    # Call a Ring API to test connectivity
+    def testApiCall(self):
+        # Then calling an API, get the access token (it will be refreshed if necessary)
+        accessToken = self.getAccessToken()
+
+        if accessToken is None:
+            raise Exception('Access token is not available')
+
+        completeUrl = self.ringApiBasePath + '/user/info'
+
+        headers = {
+            'Authorization': f"Bearer { accessToken }"
+        }
+
+        try:
+            response = requests.get(completeUrl, headers=headers)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as error:
+            LOGGER.error(f"Call GET { completeUrl } failed: { error }")
+            raise Exception('Connection to Ring API failed')
+
+    def testWebhook(self, body):
+        try:
+            config = self.poly.getConfig()
+            completeUrl = self.getPostbackUrl(config['uuid'], config['profileNum'])
+
+            headers = {
+                'pragma': self.currentPragma
+            }
+
+            response = requests.post(completeUrl, headers=headers, json=body)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as error:
+            LOGGER.error(f"Call event url failed GET { completeUrl } failed: { error }")
+            raise Exception('Connection to Ring API failed')
+
 
     def getAllDevices(self):
         return self._callApi(url='/devices')
@@ -97,24 +139,32 @@ class RingInterface(OAuth):
         allDevices = devices['doorbells'] + devices['stickup_cams']
         return next((d for d in allDevices if d['id'] == id), None)
 
-    def subscribe(self, uuid, slot, pragma):
-        # Our inbound events will have this pragma in the headers to make sure it's for us
-        postbackUrl = f"https://dev.isy.io/api/eisy/pg3/webhook/noresponse/{ uuid }/{ slot }"
+    def subscribe(self):
+        config = self.poly.getConfig()
+        postbackUrl = self.getPostbackUrl(config['uuid'], config['profileNum'])
+
+        # Set a new pragma. Webhooks will be accepted only if it has a header 'pragma' = currentPragma
+        # We change it every long polls as a security measure
+        self.currentPragma = str(time.time())
 
         LOGGER.info(f"Requesting subscription to { postbackUrl }")
+        LOGGER.info(f"Pragma is set to { self.currentPragma }")
 
         body = {
             'subscription': {
                 'postback_url': postbackUrl,
                 'metadata': {
                     'headers': {
-                        'Pragma': pragma
+                        'Pragma': self.currentPragma
                     }
                 }
              }
         }
 
         return self._callApi(method='PATCH', url='/subscription', body=body)
+
+    def getCurrentPragma(self):
+        return self.currentPragma
 
     def unsubscribe(self):
         return self._callApi(method='DELETE', url='/subscription')

@@ -6,6 +6,8 @@ Copyright (C) 2023 Universal Devices
 MIT License
 """
 import requests
+import threading
+import time
 from udi_interface import LOGGER, Node
 from nodes.doorbell import Doorbell
 from nodes.doorbellMotion import DoorbellMotion
@@ -51,8 +53,11 @@ class Controller(Node):
     id = 'CTL'
 
     drivers = [
-        { 'driver': 'ST', 'value': 0, 'uom': 2 }
+        { 'driver': 'ST', 'value': 0, 'uom': 25 },
+        { 'driver': 'GV0', 'value': 0, 'uom': 25 }
     ]
+
+    webhookTestTimeoutSeconds = 5
 
     def __init__(self, polyglot, parent, address, name, ringInterface):
         super(Controller, self).__init__(polyglot, parent, address, name)
@@ -136,10 +141,54 @@ class Controller(Node):
                 # Run a query on all devices with prefetched data
                 node.queryWithPrefetched(self.devices)
 
+    def test(self, param=None):
+        try:
+            self.setDriver('GV0', 1) # 1=Test in progress
+            time.sleep(1)
+
+            # First, test that we can call a Ring API. This tests that the oAuth access token is valid.
+            self.ring.testApiCall()
+            LOGGER.info('Ring API call is successful.')
+
+            # Our webhook handler will route this to our activate() function
+            body = {
+               'event': 'webhook-test',
+               'data': {
+                   'doorbell': {
+                       'id': self.address,
+                       'description': self.name
+                   }
+               }
+            }
+
+            self.ring.testWebhook(body)
+            LOGGER.info('Webhook test message sent successfully.')
+
+            self.webhookTimer = threading.Timer(self.webhookTestTimeoutSeconds, self.webhookTimeout)
+            self.webhookTimer.start()
+
+        except Exception as error:
+            LOGGER.error(f"Test Ring API call failed: { error }")
+            self.setDriver('GV0', 4) # 4=failure
+
+    # This is called when the webhook is not received on time
+    def webhookTimeout(self):
+        if self.getDriver('GV0') == 1: # Test in progress
+            LOGGER.error(f"Webhook test message timed out after { self.webhookTestTimeoutSeconds } seconds.")
+            self.setDriver('GV0', 3) # 3=Timeout
+
+    # This is called when we test webhooks - We successfully received it.
+    def activate(self):
+        if self.getDriver('GV0') == 1: # Test in progress
+            LOGGER.error('Webhook test message received successfully.')
+            self.webhookTimer.cancel()
+            self.setDriver('GV0', 2) # 2=Success
+
     # The commands here need to match what is in the nodedef profile file.
     commands = {
         'DISCOVER': discoverDevices,
-        'QUERYALL': queryAll
-        }
+        'QUERYALL': queryAll,
+        'TEST': test
+    }
 
 

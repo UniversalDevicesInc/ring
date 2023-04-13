@@ -1,12 +1,23 @@
 ND-CTL-NAME = Ring Controller
 ND-CTL-ICON = GenericCtl
-ST-CTL-ST-NAME = NodeServer Online
+ST-CTL-ST-NAME = NodeServer Status
+ST-CTL-GV0-NAME = Test result
 CMD-CTL-DISCOVER-NAME = Discover devices
 CMD-CTL-QUERYALL-NAME = Query All
+CMD-CTL-TEST-NAME = Test Ring
+
+ONLINE-0 = Offline
+ONLINE-1 = Online
+
+TESTRESULT-0 = Not tested
+TESTRESULT-1 = Testing...
+TESTRESULT-2 = Success
+TESTRESULT-3 = Timeout
+TESTRESULT-4 = Failure
 
 ND-DOORBELL-NAME = Doorbell
 ND-DOORBELL-ICON = DoorLock
-ST-DB-ST-NAME = Online
+ST-DB-ST-NAME = Status
 ST-DB-BATLVL-NAME = Battery life
 ST-DB-GV0-NAME = Battery life 2
 ST-DB-GV1-NAME = Battery mV
@@ -19,7 +30,7 @@ CMD-DBM-DOF-NAME = Motion timeout
 
 ND-CAMERA-NAME = Camera Motion
 ND-CAMERA-ICON = MotionSensor
-ST-CAM-ST-NAME = Online
+ST-CAM-ST-NAME = Status
 ST-CAM-BATLVL-NAME = Battery life
 ST-CAM-GV0-NAME = Battery life 2
 ST-CAM-GV1-NAME = Battery mV
