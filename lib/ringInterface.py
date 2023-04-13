@@ -115,12 +115,21 @@ class RingInterface(OAuth):
                 'pragma': self.currentPragma
             }
 
-            response = requests.post(completeUrl, headers=headers, json=body)
+            response = requests.post(completeUrl, headers=headers, json=body, timeout=5)
             response.raise_for_status()
         except requests.exceptions.HTTPError as error:
-            LOGGER.error(f"Call event url failed GET { completeUrl } failed: { error }")
-            raise Exception('Connection to Ring API failed')
+            httpStatus = error.response.status_code
 
+            # Not online?
+            if httpStatus == 503:
+                LOGGER.error(f"MQTT connection not online.\nOn my.isy.io, please check Select Tool | Maintenance | PG3 Remote connection. It has to be active.\nIf you don't see the option, your device does not support it. Make sure you are using an eisy at 5.5.9 or more recent, or a Polisy using PG3x.")
+            # No access to uuid?
+            elif httpStatus == 423:
+                LOGGER.error(f"Make sure that uuid { config['uuid'] } is in your portal account, has a license and is authorized.")
+            else:
+                LOGGER.error(f"Call event url failed GET { completeUrl } failed with HTTP { httpStatus }: { error }")
+
+            raise Exception('Error sending event to Portal webhook')
 
     def getAllDevices(self):
         return self._callApi(url='/devices')
