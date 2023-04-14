@@ -53,7 +53,8 @@ class Controller(Node):
     id = 'CTL'
 
     drivers = [
-        { 'driver': 'ST', 'value': 0, 'uom': 25 },
+        # Default value is "Online"
+        { 'driver': 'ST', 'value': 1, 'uom': 25 },
         { 'driver': 'GV0', 'value': 0, 'uom': 25 }
     ]
 
