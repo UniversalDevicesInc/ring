@@ -18,11 +18,11 @@ The settings for this node are:
 ## Requirements
 
 1. PG3x (eisy, or Polisy updated with PG3x)
-2. ISY firmware 5.5.9 or later
+2. ISY firmware 5.6.0 or later
 3. PG3 Remote connection must be enabled
    * Settings are in Portal under Select Tools | Maintenance | PG3 Remote connection
 
 # Release Notes
 
-- 1.0.0 04/12/2023
-   - Initial version published to github
+- 1.0.4 04/18/2023
+   - Initial working beta version published to github
