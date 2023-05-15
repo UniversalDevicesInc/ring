@@ -101,7 +101,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([])
-        polyglot.start({ 'version': '1.0.4', 'requestId': True })
+        polyglot.start({ 'version': '1.0.5', 'requestId': True })
 
         parameters = Custom(polyglot, 'customparams')
 
