@@ -26,3 +26,5 @@ The settings for this node are:
 
 - 1.0.4 04/18/2023
    - Initial working beta version published to github
+- 1.0.5 05/15/2023
+  - Fixed bug with ownership verification when using shared devices
