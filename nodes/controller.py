@@ -98,7 +98,7 @@ class Controller(Node):
                 LOGGER.warn(f"Adding doorbell { doorbellData['id'] } ({ doorbellData['description'] }) ignored: Doorbell is shared")
 
         for camData in self.devices['stickup_cams']:
-            ownerId = doorbellData['owner']['id']
+            ownerId = camData['owner']['id']
 
             if ownerId == self.userId:
                 addressCamera = str(camData['id']) + '_m'  # Has to be _m to receive motion events
