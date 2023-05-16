@@ -101,9 +101,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([])
-        polyglot.start({ 'version': '1.0.5', 'requestId': True })
-
-        parameters = Custom(polyglot, 'customparams')
+        polyglot.start({ 'version': '1.1.0', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
@@ -122,6 +120,7 @@ if __name__ == "__main__":
         polyglot.subscribe(polyglot.STOP, stopHandler)
         polyglot.subscribe(polyglot.CUSTOMDATA, ringInterface.customDataHandler)
         polyglot.subscribe(polyglot.CUSTOMNS, ringInterface.customNsHandler)
+        polyglot.subscribe(polyglot.CUSTOMPARAMS, ringInterface.customParamsHandler)
         polyglot.subscribe(polyglot.OAUTH, oauthHandler)
         polyglot.subscribe(polyglot.WEBHOOK, webhookHandler)
         polyglot.subscribe(polyglot.CONFIGDONE, configDoneHandler)

@@ -8,7 +8,7 @@ MIT License
 import time
 import re
 import requests
-from udi_interface import LOGGER
+from udi_interface import LOGGER, Custom
 from lib.oauth import OAuth
 
 # Implements the API calls to Ring
@@ -20,6 +20,7 @@ class RingInterface(OAuth):
         super().__init__(polyglot)
 
         self.poly = polyglot
+        self.customParams = Custom(polyglot, 'customparams')
         LOGGER.info('Ring interface initialized...')
 
     # The OAuth class needs to be hooked to these 3 handlers
@@ -31,6 +32,11 @@ class RingInterface(OAuth):
 
     def oauthHandler(self, token):
         super()._oauthHandler(token)
+
+    def customParamsHandler(self, data):
+        self.customParams.load(data)
+        self.includeShared = ('shared' in self.customParams and self.customParams['shared'].lower() == 'true')
+        LOGGER.info(f"Include shared devices: { self.includeShared }")
 
     # Convert nodeserver address to a ring device id (Strip non-numeric characters)
     def addressToId(self, address):
@@ -155,7 +161,7 @@ class RingInterface(OAuth):
         if devices is None:
             return
 
-        allDevices = devices['doorbells'] + devices['stickup_cams']
+        allDevices = devices['doorbells'] + devices['authorized_doorbells'] + devices['stickup_cams']
         return next((d for d in allDevices if d['id'] == id), None)
 
     def subscribe(self):

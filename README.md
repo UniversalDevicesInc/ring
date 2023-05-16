@@ -5,22 +5,23 @@ The Ring Node Server retrieves your Ring devices and allows you to
 get motion and ring events, and also control floodlights.
 
 ## Installation
-
-
-### Node Settings
 The settings for this node are:
 
-#### Short Poll
-   * The interval used to poll the battery level
-#### Long Poll
-   * The interval used to resubscribe to Ring events
+### Short Poll
+   - The interval used to poll the battery level
+### Long Poll
+   - The interval used to resubscribe to Ring events
+
+### Custom params
+   - shared
+     - Set to "true" to include shared devices
 
 ## Requirements
 
 1. PG3x (eisy, or Polisy updated with PG3x)
 2. ISY firmware 5.6.0 or later
 3. PG3 Remote connection must be enabled
-   * Settings are in Portal under Select Tools | Maintenance | PG3 Remote connection
+    - Settings are in Portal under Select Tools | Maintenance | PG3 Remote connection
 
 # Release Notes
 
@@ -28,3 +29,5 @@ The settings for this node are:
    - Initial working beta version published to github
 - 1.0.5 05/15/2023
   - Fixed bug with ownership verification when using shared devices
+- 1.1.0 05/16/2023
+  - Added support for shared devices

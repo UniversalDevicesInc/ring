@@ -77,12 +77,20 @@ class Controller(Node):
         LOGGER.info(f"User id is: { self.userId }")
 
         self.devices = self.ring.getAllDevices()
-        LOGGER.info(f'Devices: { self.devices }')
+        LOGGER.info(f"Devices: { self.devices }")
 
-        for doorbellData in self.devices['doorbells']:
+        LOGGER.info(f"Including shared devices: { self.ring.includeShared }")
+
+        doorbellsList = self.devices['doorbells']
+
+        # Shared doorbells are in authorized_doorbells (For cams, they are in the same array)
+        if self.ring.includeShared:
+          doorbellsList += self.devices['authorized_doorbells']
+
+        for doorbellData in doorbellsList:
             ownerId = doorbellData['owner']['id']
 
-            if ownerId == self.userId:
+            if ownerId == self.userId or self.ring.includeShared:
                 addressDoorbell = str(doorbellData['id']) + '_db'  # Has to be _db to receive ding events
                 nameDoorbell = doorbellData['description']
                 doorbell = Doorbell(self.poly, self.address, addressDoorbell, nameDoorbell, self.ring)
@@ -100,7 +108,7 @@ class Controller(Node):
         for camData in self.devices['stickup_cams']:
             ownerId = camData['owner']['id']
 
-            if ownerId == self.userId:
+            if ownerId == self.userId or self.ring.includeShared:
                 addressCamera = str(camData['id']) + '_m'  # Has to be _m to receive motion events
                 nameCamera = camData['description'] + ' (Motion)'
                 camera = Camera(self.poly, self.address, addressCamera, nameCamera, self.ring)
