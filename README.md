@@ -15,6 +15,7 @@ The settings for this node are:
 ### Custom params
    - shared
      - Set to "true" to include shared devices
+     - You will need to re-run device discovery after
 
 ## Requirements
 
