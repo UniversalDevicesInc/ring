@@ -129,7 +129,7 @@ class Controller(Node):
                     LOGGER.warn(f"Adding camera lighting node { addressCameraLight }: { nameCameraLight }")
                     self.poly.addNode(cameraLight)
             else:
-                LOGGER.warn(f"Adding camera { doorbellData['id'] } ({ doorbellData['description'] }) ignored: Camera is shared")
+                LOGGER.warn(f"Adding camera { camData['id'] } ({ camData['description'] }) ignored: Camera is shared")
 
 
     # When node is added, automatically "query" using prefetched devices data from discoverDevices

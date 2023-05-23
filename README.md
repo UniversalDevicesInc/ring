@@ -32,3 +32,5 @@ The settings for this node are:
   - Fixed bug with ownership verification when using shared devices
 - 1.1.0 05/16/2023
   - Added support for shared devices
+- 1.1.1 05/23/2023
+    - Fixed logging
