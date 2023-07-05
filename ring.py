@@ -101,7 +101,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([])
-        polyglot.start({ 'version': '1.1.1', 'requestId': True })
+        polyglot.start({ 'version': '1.1.2', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
