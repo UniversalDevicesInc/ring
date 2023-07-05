@@ -189,7 +189,7 @@ class RingInterface(OAuth):
         return self._callApi(method='PATCH', url='/subscription', body=body)
 
     def getCurrentPragma(self):
-        return self.currentPragma
+        return getattr(self, 'currentPragma', None)
 
     def unsubscribe(self):
         return self._callApi(method='DELETE', url='/subscription')

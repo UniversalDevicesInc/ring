@@ -21,16 +21,18 @@ The settings for this node are:
 
 1. PG3x (eisy, or Polisy updated with PG3x)
 2. ISY firmware 5.6.0 or later
-3. PG3 Remote connection must be enabled
+3. PG3 Remote connection must be enabled and active
     - Settings are in Portal under Select Tools | Maintenance | PG3 Remote connection
 
 # Release Notes
 
 - 1.0.4 04/18/2023
-   - Initial working beta version published to github
+  - Initial working beta version published to github
 - 1.0.5 05/15/2023
   - Fixed bug with ownership verification when using shared devices
 - 1.1.0 05/16/2023
   - Added support for shared devices
 - 1.1.1 05/23/2023
-    - Fixed logging
+  - Fixed logging
+- 1.1.2 07/05/2023
+  - Enhanced error handling when nodeserver is not yet linked to a Ring account
