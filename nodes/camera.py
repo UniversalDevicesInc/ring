@@ -38,7 +38,7 @@ class Camera(Node):
 
     # When nodeserver stops, we set all devices offline
     def setOffline(self):
-        self.setDriver('ST', 0)
+        self.setDriver('ST', 0, True, True)
 
     # Only nodes with this method can be globally refreshed
     def queryWithPrefetched(self, prefetched):
@@ -52,7 +52,7 @@ class Camera(Node):
 
         if deviceData is None:
             LOGGER.info(f"Ring device id { self.deviceId } not found")
-            self.setDriver('ST', 0)
+            self.setDriver('ST', 0, True, True)
             return
 
         LOGGER.debug(f"Device data: { deviceData }")
@@ -64,25 +64,25 @@ class Camera(Node):
             # If the device is not found in the devices data, mark it offline
             online = 0
 
-        self.setDriver('ST', online)
+        self.setDriver('ST', online, True, True)
 
         # Devices may have battery_life, others have battery_voltage
         try:
             bat = deviceData['battery_life']
-            self.setDriver('BATLVL', bat)
+            self.setDriver('BATLVL', bat, True, True)
         except KeyError:
             pass
 
         # Some devices have 2 batteries.
         try:
             bat2 = deviceData['battery_life_2']
-            self.setDriver('GV0', bat2)
+            self.setDriver('GV0', bat2, True, True)
         except KeyError:
             pass
 
         try:
             batmv = deviceData['battery_voltage']
-            self.setDriver('GV1', batmv)
+            self.setDriver('GV1', batmv, True, True)
         except KeyError:
             pass
 

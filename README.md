@@ -26,13 +26,15 @@ The settings for this node are:
 
 # Release Notes
 
-- 1.0.4 04/18/2023
-  - Initial working beta version published to github
-- 1.0.5 05/15/2023
-  - Fixed bug with ownership verification when using shared devices
-- 1.1.0 05/16/2023
-  - Added support for shared devices
-- 1.1.1 05/23/2023
-  - Fixed logging
+- 1.1.3 07/17/2023
+  - When updating properties, always send them to IoX. This is to prevent blank properties.
 - 1.1.2 07/05/2023
   - Enhanced error handling when nodeserver is not yet linked to a Ring account
+- 1.1.1 05/23/2023
+  - Fixed logging
+- 1.1.0 05/16/2023
+  - Added support for shared devices
+- 1.0.5 05/15/2023
+  - Fixed bug with ownership verification when using shared devices
+- 1.0.4 04/18/2023
+  - Initial working beta version published to github

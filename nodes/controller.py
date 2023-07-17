@@ -152,7 +152,7 @@ class Controller(Node):
 
     def test(self, param=None):
         try:
-            self.setDriver('GV0', 1) # 1=Test in progress
+            self.setDriver('GV0', 1, True, True) # 1=Test in progress
             time.sleep(1)
 
             # First, test that we can call a Ring API. This tests that the oAuth access token is valid.
@@ -178,20 +178,20 @@ class Controller(Node):
 
         except Exception as error:
             LOGGER.error(f"Test Ring API call failed: { error }")
-            self.setDriver('GV0', 4) # 4=failure
+            self.setDriver('GV0', 4, True, True) # 4=failure
 
     # This is called when the webhook is not received on time
     def webhookTimeout(self):
         if self.getDriver('GV0') == 1: # Test in progress
             LOGGER.error(f"Webhook test message timed out after { self.webhookTestTimeoutSeconds } seconds.")
-            self.setDriver('GV0', 3) # 3=Timeout
+            self.setDriver('GV0', 3, True, True) # 3=Timeout
 
     # This is called when we test webhooks - We successfully received it.
     def activate(self):
         if self.getDriver('GV0') == 1: # Test in progress
             LOGGER.info('Webhook test message received successfully.')
             self.webhookTimer.cancel()
-            self.setDriver('GV0', 2) # 2=Success
+            self.setDriver('GV0', 2, True, True) # 2=Success
 
     # The commands here need to match what is in the nodedef profile file.
     commands = {
