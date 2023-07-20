@@ -15,10 +15,10 @@ class Camera(Node):
     # nodedef id
     id = 'CAMERA'
     drivers = [
-        { 'driver': 'ST', 'value': 0, 'uom': 25 },
-        { 'driver': 'BATLVL', 'value': 0, 'uom': 51 },
-        { 'driver': 'GV0', 'value': 0, 'uom': 51 },
-        { 'driver': 'GV1', 'value': 0, 'uom': 43 }
+        { 'driver': 'ST', 'value': 0, 'uom': 25, 'name': 'Online' },
+        { 'driver': 'BATLVL', 'value': 0, 'uom': 51, 'name': 'Battery 1 percentage' },
+        { 'driver': 'GV0', 'value': 0, 'uom': 51, 'name': 'Battery 2 percentage' },
+        { 'driver': 'GV1', 'value': 0, 'uom': 43, 'name': 'Battery mV' }
     ]
 
     def __init__(self, polyglot, parent, address, name, ringInterface):

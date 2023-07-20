@@ -26,6 +26,8 @@ The settings for this node are:
 
 # Release Notes
 
+- - 1.1.4 07/20/2023
+  - Added driver names which can be seen in PG3, when looking at the node details.
 - 1.1.3 07/17/2023
   - When updating properties, always send them to IoX. This is to prevent blank properties.
 - 1.1.2 07/05/2023
