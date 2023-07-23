@@ -26,6 +26,8 @@ The settings for this node are:
 
 # Release Notes
 
+- - 1.1.5 07/23/2023
+  - Enhanced error handling in case of exceptions.
 - - 1.1.4 07/20/2023
   - Added driver names which can be seen in PG3, when looking at the node details.
 - 1.1.3 07/17/2023
