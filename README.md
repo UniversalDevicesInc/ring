@@ -26,6 +26,8 @@ The settings for this node are:
 
 # Release Notes
 
+- - 1.1.6 08/08/2023
+  - Updated logging.
 - - 1.1.5 07/23/2023
   - Enhanced error handling in case of exceptions.
 - - 1.1.4 07/20/2023

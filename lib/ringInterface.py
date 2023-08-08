@@ -138,7 +138,7 @@ class RingInterface(OAuth):
 
             # Not online?
             if httpStatus == 503:
-                LOGGER.error(f"MQTT connection not online.\nOn my.isy.io, please check Select Tool | Maintenance | PG3 Remote connection. It has to be active.\nIf you don't see the option, your device does not support it. Make sure you are using an eisy at 5.6.0 or more recent, or a Polisy using PG3x.")
+                LOGGER.error(f"MQTT connection not online.\nOn my.isy.io, please check Select Tool | PG3 | Remote connection. It has to be active.\nIf you don't see the option, your device does not support it. Make sure you are using an eisy at 5.6.0 or more recent, or a Polisy using PG3x.")
             # No access to uuid?
             elif httpStatus == 423:
                 LOGGER.error(f"Make sure that uuid { config['uuid'] } is in your portal account, has a license and is authorized.")
