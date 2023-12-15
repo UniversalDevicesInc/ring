@@ -70,7 +70,7 @@ class Doorbell(Node):
         # Devices may have battery_life, others have battery_voltage
         try:
             bat = deviceData['battery_life']
-            self.setDriver('BATLVL', bat, True, True, text='test')
+            self.setDriver('BATLVL', bat, True, True)
         except KeyError:
             pass
 
