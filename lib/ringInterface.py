@@ -5,11 +5,11 @@ Copyright (C) 2023 Universal Devices
 
 MIT License
 """
+import json
 import time
 import re
 import requests
-from udi_interface import LOGGER, Custom
-from lib.oauth import OAuth
+from udi_interface import LOGGER, Custom, OAuth
 
 # Implements the API calls to Ring
 # It inherits the OAuth class
@@ -21,22 +21,66 @@ class RingInterface(OAuth):
 
         self.poly = polyglot
         self.customParams = Custom(polyglot, 'customparams')
+        self.includeShared = False
         LOGGER.info('Ring interface initialized...')
 
-    # The OAuth class needs to be hooked to these 3 handlers
     def customDataHandler(self, data):
-        super()._customDataHandler(data)
+        if data is not None and data.get('token'):
+            LOGGER.info('Migrating tokens for new Ring version')
+            # Save token data to the new oAuthTokens custom
+            Custom(self.poly, 'oauthTokens').load(data['token'], True)
+
+            # Save customdata without the key 'token'
+            newData = { key: value for key, value in data.items() if key != 'token'}
+            Custom(self.poly, 'customdata').load(newData, True)
+
+            # Continue processing as if it was in the right place
+            self.customNsHandler('oauthTokens', data['token'])
 
     def customNsHandler(self, key, data):
-        super()._customNsHandler(key, data)
+        LOGGER.debug('customNsHandler {}: {}'.format(key, json.dumps(data)))
+        super().customNsHandler(key, data)
 
     def oauthHandler(self, token):
-        super()._oauthHandler(token)
+        LOGGER.debug('oAuth handler: {}'.format(json.dumps(token)))
+        super().oauthHandler(token)
 
-    def customParamsHandler(self, data):
-        self.customParams.load(data)
+    def customParamsHandler(self, customParams):
+        self.customParams.load(customParams)
         self.includeShared = ('shared' in self.customParams and self.customParams['shared'].lower() == 'true')
         LOGGER.info(f"Include shared devices: { self.includeShared }")
+        LOGGER.debug(f"CustomParams: { json.dumps(customParams) }")
+
+        if customParams is not None:
+            oauthSettingsUpdate = {}
+
+            if 'client_id' in customParams:
+                oauthSettingsUpdate['client_id'] = customParams['client_id']
+                LOGGER.info(f"oAuth client_id set to: { customParams['client_id'] }")
+
+            if 'client_secret' in customParams:
+                oauthSettingsUpdate['client_secret'] = customParams['client_secret']
+                LOGGER.info('oAuth secret set to: ********')
+
+            if 'my_auth_param' in customParams:
+                if 'parameters' not in oauthSettingsUpdate:
+                    oauthSettingsUpdate['parameters'] = {}
+
+                oauthSettingsUpdate['parameters']['my_auth_param'] = customParams['my_auth_param']
+                LOGGER.info(f"Setting oAuth my_auth_param to: { customParams['my_auth_param'] }")
+
+            if 'my_token_param' in customParams:
+                if 'token_parameters' not in oauthSettingsUpdate:
+                    oauthSettingsUpdate['token_parameters'] = {}
+
+                oauthSettingsUpdate['token_parameters']['my_token_param'] = customParams['my_token_param']
+                LOGGER.info(f"Setting oAuth my_token_param to: { customParams['my_token_param'] }")
+
+            LOGGER.debug(f"Updating oAuth config using: { json.dumps(oauthSettingsUpdate) }")
+
+            self.updateOauthSettings(oauthSettingsUpdate)
+
+            LOGGER.info(f"Updated oAuth config: { self.getOauthSettings() }")
 
     # Convert nodeserver address to a ring device id (Strip non-numeric characters)
     def addressToId(self, address):
@@ -56,20 +100,21 @@ class RingInterface(OAuth):
 
     # Call a Ring API
     def _callApi(self, method='GET', url=None, body=None):
-        # Then calling an API, get the access token (it will be refreshed if necessary)
-        accessToken = self.getAccessToken()
-
-        if accessToken is None:
-            LOGGER.error('Access token is not available')
-            return None
-
         if url is None:
             LOGGER.error('url is required')
             return None
 
         completeUrl = self.ringApiBasePath + url
 
-        #LOGGER.info(f"completeUrl { completeUrl }")
+        LOGGER.info(f"Making call to { method } { completeUrl }")
+
+        # Then calling an API, get the access token (it will be refreshed if necessary)
+        accessToken = self.getAccessToken()
+
+        # if accessToken is None:
+        #     LOGGER.debug('Access token is not available')
+        #     return None
+
         headers = {
             'Authorization': f"Bearer { accessToken }"
         }
@@ -90,7 +135,7 @@ class RingInterface(OAuth):
                 response = requests.put(completeUrl, headers=headers)
 
             response.raise_for_status()
-            LOGGER.info(f"Call PATCH { completeUrl } successful")
+            LOGGER.info(f"Call { method } { completeUrl } successful")
             try:
                 return response.json()
             except requests.exceptions.JSONDecodeError:

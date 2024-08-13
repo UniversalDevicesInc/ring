@@ -27,17 +27,22 @@ controller = None
 def configDoneHandler():
     polyglot.Notices.clear()
 
-    accessToken = ringInterface.getAccessToken()
-
-    if accessToken is None:
-        LOGGER.info('Access token is not yet available. Please authenticate.')
+    try:
+        ringInterface.getAccessToken()
+    except ValueError as err:
+        LOGGER.warning('Access token is not yet available. Please authenticate.')
         polyglot.Notices['auth'] = 'Please initiate authentication'
         return
 
-    controller.discoverDevices()
-    ringInterface.subscribe()
+    try:
+        controller.discoverDevices()
+        ringInterface.subscribe()
+    except ValueError as err:
+        LOGGER.debug(f"Error in configDoneHandler: {err}")
+
 
 def oauthHandler(token):
+    LOGGER.info('Authentication successful {}'.format(json.dumps(token)))
     # When user just authorized, the ringInterface needs to store the tokens
     ringInterface.oauthHandler(token)
 
@@ -45,9 +50,18 @@ def oauthHandler(token):
     configDoneHandler()
 
 def pollHandler(pollType):
+    try:
+        ringInterface.getAccessToken()
+    except ValueError as err:
+        LOGGER.info('Poll skipped as we are not authenticated to Ring.')
+        polyglot.Notices['auth'] = 'Please initiate authentication'
+        return
+
+
     if pollType == 'longPoll':
         ringInterface.subscribe()
     else:
+        polyglot.setPoll(short=13)
         controller.queryAll()
 
 def addNodeDoneHandler(node):
@@ -62,6 +76,10 @@ def stopHandler():
     polyglot.stop()
 
 def webhookHandler(data):
+    # TEST FOR NEST:
+    polyglot.webhookResponse()
+    LOGGER.info(f"-------------Returning RESPONSE---------")
+
     # Available information: headers, query, body
     LOGGER.debug(f"Webhook received: { data }")
     receivedPragma = data['headers']['pragma']
@@ -102,11 +120,10 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([])
-        polyglot.start({ 'version': '1.1.7', 'requestId': True })
+        polyglot.start({ 'version': '1.2.0', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
-
         # Update the profile files
         polyglot.updateProfile()    # Use checkProfile() instead?
 
@@ -119,10 +136,10 @@ if __name__ == "__main__":
         # subscribe to the events we want
         polyglot.subscribe(polyglot.POLL, pollHandler)
         polyglot.subscribe(polyglot.STOP, stopHandler)
-        polyglot.subscribe(polyglot.CUSTOMDATA, ringInterface.customDataHandler)
-        polyglot.subscribe(polyglot.CUSTOMNS, ringInterface.customNsHandler)
-        polyglot.subscribe(polyglot.CUSTOMPARAMS, ringInterface.customParamsHandler)
-        polyglot.subscribe(polyglot.OAUTH, oauthHandler)
+        polyglot.subscribe(polyglot.CUSTOMDATA, ringInterface.customDataHandler) # Used for migration from older OAuth class
+        polyglot.subscribe(polyglot.CUSTOMNS, ringInterface.customNsHandler)  # oAuth config & tokens saved
+        polyglot.subscribe(polyglot.CUSTOMPARAMS, ringInterface.customParamsHandler) # UI params
+        polyglot.subscribe(polyglot.OAUTH, oauthHandler) # oAuth tokens received after authentication
         polyglot.subscribe(polyglot.WEBHOOK, webhookHandler)
         polyglot.subscribe(polyglot.CONFIGDONE, configDoneHandler)
         polyglot.subscribe(polyglot.ADDNODEDONE, addNodeDoneHandler)
