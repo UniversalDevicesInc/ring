@@ -61,7 +61,6 @@ def pollHandler(pollType):
     if pollType == 'longPoll':
         ringInterface.subscribe()
     else:
-        polyglot.setPoll(short=13)
         controller.queryAll()
 
 def addNodeDoneHandler(node):
@@ -120,7 +119,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([])
-        polyglot.start({ 'version': '1.2.0', 'requestId': True })
+        polyglot.start({ 'version': '1.2.1', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()

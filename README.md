@@ -26,6 +26,10 @@ The settings for this node are:
 
 # Release Notes
 
+- 1.2.1 11/05/2024
+  - Removed test code which use to set the short poll to 13
+- 1.2.0 08/13/2024
+  - Switched to Python interface OAuth class
 - 1.1.7 12/15/2023
   - Fix doorbell battery level
 - 1.1.6 08/08/2023
