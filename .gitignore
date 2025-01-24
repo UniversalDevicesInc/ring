@@ -1,0 +1,6 @@
+.idea
+logs
+svc.pid
+*.lock
+*.cert
+*.key
