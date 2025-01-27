@@ -80,7 +80,7 @@ def webhookHandler(data):
     #LOGGER.info(f"-------------Returning RESPONSE---------")
 
     # Available information: headers, query, body
-    LOGGER.debug(f"Webhook received: { data }")
+    LOGGER.info(f"Webhook received: { data }")
     receivedPragma = data['headers']['pragma']
     currentPragma = ringInterface.getCurrentPragma()
 
@@ -119,7 +119,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([], { "enableWebhook": True })
-        polyglot.start({ 'version': '1.2.1', 'requestId': True })
+        polyglot.start({ 'version': '1.2.2', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
@@ -132,7 +132,10 @@ if __name__ == "__main__":
         # Create the controller node
         controller = Controller(polyglot, 'controller', 'controller', 'Ring', ringInterface)
 
-        polyglot.webhookStart({ "name": "Ring" })
+        #polyglot.webhookStart({ "name": "Ring" })
+        # Tests for Tesla
+        polyglot.webhookStart({ "assets": [{ "id": "5YJ3E1EA5RF721953" }], "name": "Ring"})
+
         # subscribe to the events we want
         polyglot.subscribe(polyglot.POLL, pollHandler)
         polyglot.subscribe(polyglot.STOP, stopHandler)
