@@ -76,8 +76,8 @@ def stopHandler():
 
 def webhookHandler(data):
     # TEST FOR NEST:
-    polyglot.webhookResponse()
-    LOGGER.info(f"-------------Returning RESPONSE---------")
+    #polyglot.webhookResponse()
+    #LOGGER.info(f"-------------Returning RESPONSE---------")
 
     # Available information: headers, query, body
     LOGGER.debug(f"Webhook received: { data }")
