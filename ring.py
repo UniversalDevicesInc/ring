@@ -118,7 +118,7 @@ def webhookHandler(data):
 
 if __name__ == "__main__":
     try:
-        polyglot = Interface([])
+        polyglot = Interface([], { "enableWebhook": True })
         polyglot.start({ 'version': '1.2.1', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
@@ -132,6 +132,7 @@ if __name__ == "__main__":
         # Create the controller node
         controller = Controller(polyglot, 'controller', 'controller', 'Ring', ringInterface)
 
+        polyglot.webhookStart({ "name": "Ring" })
         # subscribe to the events we want
         polyglot.subscribe(polyglot.POLL, pollHandler)
         polyglot.subscribe(polyglot.STOP, stopHandler)
