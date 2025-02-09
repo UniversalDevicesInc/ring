@@ -119,7 +119,7 @@ def webhookHandler(data):
 if __name__ == "__main__":
     try:
         polyglot = Interface([], { "enableWebhook": True })
-        polyglot.start({ 'version': '1.2.2', 'requestId': True })
+        polyglot.start({ 'version': '1.2.3', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
@@ -134,7 +134,7 @@ if __name__ == "__main__":
 
         #polyglot.webhookStart({ "name": "Ring" })
         # Tests for Tesla
-        polyglot.webhookStart({ "assets": [{ "id": "5YJ3E1EA5RF721953" }], "name": "Ring"})
+        polyglot.webhookStart({"name": "Ring"})
 
         # subscribe to the events we want
         polyglot.subscribe(polyglot.POLL, pollHandler)
