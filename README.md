@@ -26,6 +26,10 @@ The settings for this node are:
 
 # Release Notes
 
+- 1.2.3 02/09/2025
+  - Removed test code introduced in 1.2.2 by mistake
+- 1.2.2 01/27/2025
+  - Webhooks are no longer sent to the plugin when it is stopped
 - 1.2.1 11/05/2024
   - Removed test code which use to set the short poll to 13
 - 1.2.0 08/13/2024
