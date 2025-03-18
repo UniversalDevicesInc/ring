@@ -10,6 +10,7 @@ import time
 import re
 import requests
 from udi_interface import LOGGER, Custom, OAuth
+# from requests.exceptions import HTTPError
 
 # Implements the API calls to Ring
 # It inherits the OAuth class
@@ -123,6 +124,19 @@ class RingInterface(OAuth):
             LOGGER.error(f"body is required when using { method } with { completeUrl }")
 
         try:
+            # Simulate 401 before making actual requests
+            # mock_response = requests.Response()
+            # mock_response.status_code = 401
+            # mock_response._content = b'{"message": "Unauthorized access"}'
+            # mock_response.url = completeUrl
+            # mock_response.reason = 'Unauthorized'
+            # http_error = HTTPError(response=mock_response)
+            # http_error.response = mock_response
+            # raise http_error
+
+            # Simulate DNS failure
+            # raise requests.exceptions.ConnectionError("DNS lookup failed")
+
             if method == 'GET':
                 response = requests.get(completeUrl, headers=headers)
             elif method == 'DELETE':
@@ -142,29 +156,36 @@ class RingInterface(OAuth):
                 return response.text
 
         except requests.exceptions.HTTPError as error:
-            LOGGER.error(f"Call { method } { completeUrl } failed: { error }")
-            return None
+            if error.response.status_code == 401:
+                LOGGER.error(f"Call {method} {completeUrl} failed with status code 401. Asking to re-authorize.")
+                self.poly.Notices['auth'] = 'Please initiate authentication'
+
+            else:
+                LOGGER.error(
+                    f"Call {method} {completeUrl} failed with status {error.response.status_code}: "
+                    f"{error.response.text}"
+                )
+            raise
+
+        except requests.exceptions.ConnectionError as error:
+            LOGGER.error(f"Connection error occurred: {error}")
+            raise
+        except requests.exceptions.Timeout as error:
+            LOGGER.error(f"Timeout error occurred: {error}")
+            raise
+        except requests.exceptions.RequestException as error:
+            LOGGER.error(f"Request error occurred: {error}")
+            raise
+        except Exception:
+            # Catch any other unexpected exceptions as a last resort
+            LOGGER.exception("Unexpected error occurred during Ring API call")
+            raise
+
+
 
     # Call a Ring API to test connectivity
     def testApiCall(self):
-        # Then calling an API, get the access token (it will be refreshed if necessary)
-        accessToken = self.getAccessToken()
-
-        if accessToken is None:
-            raise Exception('Access token is not available')
-
-        completeUrl = self.ringApiBasePath + '/user/info'
-
-        headers = {
-            'Authorization': f"Bearer { accessToken }"
-        }
-
-        try:
-            response = requests.get(completeUrl, headers=headers)
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as error:
-            LOGGER.error(f"Call GET { completeUrl } failed: { error }")
-            raise Exception('Connection to Ring API failed')
+        return self._callApi(url='/user/info')
 
     def testWebhook(self, body):
         try:
@@ -193,7 +214,10 @@ class RingInterface(OAuth):
             raise Exception('Error sending event to Portal webhook')
 
     def getAllDevices(self):
-        return self._callApi(url='/devices')
+        try:
+            return self._callApi(url='/devices')
+        except Exception:
+            return None
 
     def getDeviceData(self, id, prefetched=None):
         if prefetched is None:
@@ -231,19 +255,34 @@ class RingInterface(OAuth):
              }
         }
 
-        return self._callApi(method='PATCH', url='/subscription', body=body)
+        try:
+            return self._callApi(method='PATCH', url='/subscription', body=body)
+        except Exception:
+            return None
 
     def getCurrentPragma(self):
         return getattr(self, 'currentPragma', None)
 
     def unsubscribe(self):
-        return self._callApi(method='DELETE', url='/subscription')
+        try:
+            return self._callApi(method='DELETE', url='/subscription')
+        except Exception:
+            return None
 
     def getUserInfo(self):
-        return self._callApi(url='/user/info')
+        try:
+            return self._callApi(url='/user/info')
+        except Exception:
+            return None
 
     def floodlightOn(self, deviceId):
-        return self._callApi(method='PUT', url=f"/devices/{ deviceId }/floodlight_on")
+        try:
+            return self._callApi(method='PUT', url=f"/devices/{ deviceId }/floodlight_on")
+        except Exception:
+            return None
 
     def floodlightOff(self, deviceId):
-        return self._callApi(method='PUT', url=f"/devices/{ deviceId }/floodlight_off")
+        try:
+            return self._callApi(method='PUT', url=f"/devices/{ deviceId }/floodlight_off")
+        except Exception:
+            return None

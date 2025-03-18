@@ -26,6 +26,9 @@ The settings for this node are:
 
 # Release Notes
 
+- 1.2.4 03/18/2025
+  - Enhanced error handling
+  - If API fails with a 401, plugin asks to re-authenticate
 - 1.2.3 02/09/2025
   - Removed test code introduced in 1.2.2 by mistake
 - 1.2.2 01/27/2025

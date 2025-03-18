@@ -72,6 +72,12 @@ class Controller(Node):
 
     def discoverDevices(self, param=None):
         userInfo = self.ring.getUserInfo()
+
+        userInfo = self.ring.getUserInfo()
+        if userInfo is None:
+            LOGGER.error("Failed to get user info, aborting...")
+            return
+
         self.userId = userInfo['user']['id']
 
         LOGGER.info(f"User id is: { self.userId }")
@@ -175,6 +181,14 @@ class Controller(Node):
 
             self.webhookTimer = threading.Timer(self.webhookTestTimeoutSeconds, self.webhookTimeout)
             self.webhookTimer.start()
+
+        except requests.exceptions.HTTPError as error:
+            if error.response.status_code == 401:
+                LOGGER.error(f"Test Ring API call failed with HTTP: {error.response.status_code}")
+                self.setDriver('GV0', 5, True, True)  # 5=Authorization failure
+            else:
+                LOGGER.error(f"Test Ring API call failed with http {error.response.status_code}")
+                self.setDriver('GV0', 4, True, True)  # 4=failure
 
         except Exception as error:
             LOGGER.error(f"Test Ring API call failed: { error }")

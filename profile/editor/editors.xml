@@ -13,6 +13,6 @@
 	</editor>
 	<editor id="test">
 		<!-- 25 is index -->
-		<range uom="25" subset="0-4" nls="TESTRESULT" />
+		<range uom="25" subset="0-5" nls="TESTRESULT" />
 	</editor>
 </editors>
