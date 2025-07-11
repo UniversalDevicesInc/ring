@@ -26,6 +26,8 @@ The settings for this node are:
 
 # Release Notes
 
+- 1.2.5 07/11/2025
+  - Fix oAuth due to recent changes at Ring
 - 1.2.4 03/18/2025
   - Enhanced error handling
   - If API fails with a 401, plugin asks to re-authenticate
