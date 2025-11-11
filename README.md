@@ -26,6 +26,8 @@ The settings for this node are:
 
 # Release Notes
 
+- 1.2.7 11/11/2025
+  - Add support for Gen2 Ring Floodlight Cam Pro
 - 1.2.6 07/11/2025
   - Change the oAuth scope to "read" as requested by Ring
 - 1.2.5 07/11/2025
