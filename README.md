@@ -26,6 +26,9 @@ The settings for this node are:
 
 # Release Notes
 
+- 1.2.8 11/18/2026
+  - Use dynamic profiles
+  - Add support for Ring Spotlight
 - 1.2.7 11/11/2025
   - Add support for Gen2 Ring Floodlight Cam Pro
 - 1.2.6 07/11/2025
