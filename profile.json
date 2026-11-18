@@ -1,0 +1,254 @@
+{
+  "editors": [
+    {
+      "id": "mv",
+      "ranges": [
+        {
+          "uom": "43",
+          "prec": 0,
+          "step": 10,
+          "min": 0,
+          "max": 20000
+        }
+      ]
+    },
+    {
+      "id": "online",
+      "ranges": [
+        {
+          "uom": "25",
+          "subset": "0,1",
+          "names": {
+            "0": "Offline",
+            "1": "Online"
+          }
+        }
+      ]
+    },
+    {
+      "id": "percent",
+      "ranges": [
+        {
+          "uom": "51",
+          "subset": "0-100"
+        }
+      ]
+    },
+    {
+      "id": "test",
+      "ranges": [
+        {
+          "uom": "25",
+          "subset": "0-5",
+          "names": {
+            "0": "Not tested",
+            "1": "Testing...",
+            "2": "Success",
+            "3": "Timeout",
+            "4": "Failure",
+            "5": "Ring Auth. Failure"
+          }
+        }
+      ]
+    }
+  ],
+  "linkdefs": [],
+  "nodedefs": [
+    {
+      "id": "CTL",
+      "nls": "CTL",
+      "icon": "GenericCtl",
+      "name": "Ring Controller",
+      "properties": [
+        {
+          "id": "ST",
+          "editor": "online",
+          "name": "NodeServer Status"
+        },
+        {
+          "id": "GV0",
+          "editor": "test",
+          "name": "Test result"
+        }
+      ],
+      "cmds": {
+        "sends": [],
+        "accepts": [
+          {
+            "id": "DISCOVER",
+            "native": "false",
+            "name": "Discover devices"
+          },
+          {
+            "id": "QUERYALL",
+            "native": "false",
+            "name": "Query All"
+          },
+          {
+            "id": "TEST",
+            "native": "false",
+            "name": "Test Ring"
+          }
+        ]
+      },
+      "links": {
+        "ctl": [],
+        "rsp": []
+      }
+    },
+    {
+      "id": "DOORBELL",
+      "nls": "DB",
+      "icon": "DoorLock",
+      "name": "Doorbell",
+      "properties": [
+        {
+          "id": "ST",
+          "editor": "online",
+          "name": "Status"
+        },
+        {
+          "id": "BATLVL",
+          "editor": "percent",
+          "name": "Battery life"
+        },
+        {
+          "id": "GV0",
+          "editor": "percent",
+          "name": "Battery life 2"
+        },
+        {
+          "id": "GV1",
+          "editor": "mv",
+          "name": "Battery mV"
+        }
+      ],
+      "cmds": {
+        "sends": [
+          {
+            "id": "DON",
+            "native": "false",
+            "name": "Ding"
+          }
+        ],
+        "accepts": [
+          {
+            "id": "QUERY",
+            "native": "false",
+            "name": "Query"
+          }
+        ]
+      },
+      "links": {
+        "ctl": [],
+        "rsp": []
+      }
+    },
+    {
+      "id": "DOORBELLMOTION",
+      "nls": "DBM",
+      "icon": "MotionSensor",
+      "name": "Doorbell Motion",
+      "properties": [],
+      "cmds": {
+        "sends": [
+          {
+            "id": "DON",
+            "native": "false",
+            "name": "Motion"
+          }
+        ],
+        "accepts": []
+      },
+      "links": {
+        "ctl": [],
+        "rsp": []
+      }
+    },
+    {
+      "id": "CAMERA",
+      "nls": "CAM",
+      "icon": "MotionSensor",
+      "name": "Camera Motion",
+      "properties": [
+        {
+          "id": "ST",
+          "editor": "online",
+          "name": "Status"
+        },
+        {
+          "id": "BATLVL",
+          "editor": "percent",
+          "name": "Battery life"
+        },
+        {
+          "id": "GV0",
+          "editor": "percent",
+          "name": "Battery life 2"
+        },
+        {
+          "id": "GV1",
+          "editor": "mv",
+          "name": "Battery mV"
+        }
+      ],
+      "cmds": {
+        "sends": [
+          {
+            "id": "DON",
+            "native": "false",
+            "name": "Motion"
+          }
+        ],
+        "accepts": [
+          {
+            "id": "QUERY",
+            "native": "false",
+            "name": "Query"
+          }
+        ]
+      },
+      "links": {
+        "ctl": [],
+        "rsp": []
+      }
+    },
+    {
+      "id": "LIGHT",
+      "nls": "L",
+      "icon": "Lamp",
+      "name": "Floodlight",
+      "properties": [],
+      "cmds": {
+        "sends": [
+          {
+            "id": "DON",
+            "native": "false",
+            "name": "Turn on"
+          },
+          {
+            "id": "DOF",
+            "native": "false",
+            "name": "Turn off"
+          }
+        ],
+        "accepts": [
+          {
+            "id": "DON",
+            "native": "false",
+            "name": "Turn on"
+          },
+          {
+            "id": "DOF",
+            "native": "false",
+            "name": "Turn off"
+          }
+        ]
+      },
+      "links": {
+        "ctl": [],
+        "rsp": []
+      }
+    }
+  ]
+}

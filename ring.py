@@ -2,13 +2,14 @@
 
 """
 Polyglot v3 node server - Ring
-Copyright (C) 2023 Universal Devices
+Copyright (C) 2026 Universal Devices
 
 MIT License
 """
 
 # https://github.com/UniversalDevicesInc/udi_python_interface/blob/master/API.md
 
+import os
 import sys
 import json
 import traceback
@@ -23,6 +24,9 @@ validEvents = [ 'new-ding', 'new-motion', 'webhook-test' ]
 polyglot = None
 ringInterface = None
 controller = None
+
+with open(os.path.join(os.path.dirname(__file__), 'profile.json')) as f:
+    profile = json.load(f)
 
 def configDoneHandler():
     polyglot.Notices.clear()
@@ -116,15 +120,20 @@ def webhookHandler(data):
     else:
         LOGGER.info(f"Node { address } not found")
 
+def update_profile():
+    LOGGER.info('Updating profile in JSON format')
+    polyglot.updateJsonProfile(profile, {"waitResponse": True})
+    print('JSON profile updated successfully')
+
 if __name__ == "__main__":
     try:
         polyglot = Interface([], { "enableWebhook": True })
-        polyglot.start({ 'version': '1.2.7', 'requestId': True })
+        polyglot.start({ 'version': '1.2.8', 'requestId': True })
 
         # Show the help in PG3 UI under the node's Configuration option
         polyglot.setCustomParamsDoc()
-        # Update the profile files
-        polyglot.updateProfile()    # Use checkProfile() instead?
+
+        update_profile()
 
         # Implements the API calls & Handles the oAuth authentication & token renewals
         ringInterface = RingInterface(polyglot)
