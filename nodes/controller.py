@@ -25,6 +25,8 @@ DEVICE_TYPES = {
   'cocoa_doorbell': { 'name': 'Ring Video Doorbell 2020', 'lights': False },
   'cocoa_floodlight': { 'name': 'Ring Floodlight Cam Wired Plus', 'lights': True, 'siren': True },
   'cocoa_floodlight_v2': { 'name': 'Ring Floodlight Cam Wired Plus', 'lights': True, 'siren': True },
+  'cocoa_spotlight': { 'name': 'Ring Spotlight Cam', 'lights': True, 'siren': True },
+  'cocoa_spotlight_v2': { 'name': 'Ring Spotlight Cam Pro', 'lights': True, 'siren': True },
   'doorbell_portal': { 'name': 'Ring Peephole Cam', 'lights': False },
   'doorbell_scallop_lite': { 'name': 'Ring Video Doorbell 3', 'lights': False },
   'doorbell_scallop': { 'name': 'Ring Video Doorbell 3 Plus', 'lights': False },
